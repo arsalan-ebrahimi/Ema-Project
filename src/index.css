@@ -1,0 +1,200 @@
+@import "tailwindcss";
+
+/* ==========================================
+   Shazde Font Faces (عما سینما)
+   Loaded locally from /fonts/
+   Only weights used in the application are defined
+   ========================================== */
+
+@font-face {
+  font-family: "Shazde";
+  font-style: normal;
+  font-weight: 300;
+  src: url("/fonts/Shazde-Light.ttf") format("truetype");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Shazde";
+  font-style: normal;
+  font-weight: 400;
+  src: url("/fonts/Shazde-Regular.ttf") format("truetype");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Shazde";
+  font-style: normal;
+  font-weight: 500;
+  src: url("/fonts/Shazde-Medium.ttf") format("truetype");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Shazde";
+  font-style: normal;
+  font-weight: 700;
+  src: url("/fonts/Shazde-Bold.ttf") format("truetype");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Shazde";
+  font-style: normal;
+  font-weight: 800;
+  src: url("/fonts/Shazde-ExtraBold.ttf") format("truetype");
+  font-display: swap;
+}
+
+/* ==========================================
+   CSS Custom Properties & Color Tokens
+   ========================================== */
+:root {
+  --color-cream: #f6f1c9;
+  --color-cream-hover: #e8e2b2;
+  --color-cream-muted: rgba(246, 241, 201, 0.75);
+  --color-cream-subtle: rgba(246, 241, 201, 0.08);
+  --color-cream-border: rgba(246, 241, 201, 0.16);
+
+  --color-brand-blue: #2a5baa;
+  --color-brand-blue-hover: #1f478a;
+  --color-brand-blue-light: #3f73ce;
+  --color-brand-blue-subtle: rgba(42, 91, 170, 0.15);
+
+  --color-cinema-black: #08090c;
+  --color-cinema-bg: #0c0e14;
+  --color-cinema-surface: #131620;
+  --color-cinema-surface-hover: #1a1e2b;
+  --color-cinema-border: rgba(246, 241, 201, 0.12);
+
+  --font-family-base: "Shazde", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Tailwind CSS v4 Theme mapping */
+@theme {
+  --font-sans: "Shazde", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  --color-brand-cream: #f6f1c9;
+  --color-brand-blue: #2a5baa;
+  --color-brand-blue-hover: #1f478a;
+  --color-brand-blue-light: #3f73ce;
+
+  --color-cinema-black: #08090c;
+  --color-cinema-bg: #0c0e14;
+  --color-cinema-surface: #131620;
+  --color-cinema-surface-hover: #1a1e2b;
+  --color-cinema-border: rgba(246, 241, 201, 0.12);
+}
+
+/* ==========================================
+   Base Styles & Resets
+   ========================================== */
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
+}
+
+body {
+  font-family: var(--font-family-base);
+  background-color: var(--color-cinema-black);
+  color: var(--color-cream);
+  min-height: 100vh;
+  overflow-x: hidden;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom Cinema Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #08090c;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1f2535;
+  border-radius: 4px;
+  border: 1px solid rgba(246, 241, 201, 0.1);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2a5baa;
+}
+
+/* ==========================================
+   Cinematic Utilities
+   ========================================== */
+.cinematic-glow-blue {
+  box-shadow: 0 0 40px -10px rgba(42, 91, 170, 0.45);
+}
+
+.cinematic-glow-cream {
+  box-shadow: 0 0 35px -8px rgba(246, 241, 201, 0.25);
+}
+
+.cinematic-film-border {
+  border: 1px solid rgba(246, 241, 201, 0.15);
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.6);
+}
+
+.cinematic-glass {
+  background: rgba(12, 14, 20, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(246, 241, 201, 0.12);
+}
+
+.text-gradient-cream {
+  background: linear-gradient(135deg, #ffffff 0%, #f6f1c9 60%, #e0dab0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-blue {
+  background: linear-gradient(135deg, #6ba1ff 0%, #2a5baa 60%, #1e4080 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Swiper custom overrides for cinema dark theme */
+.swiper-pagination-bullet {
+  background: rgba(246, 241, 201, 0.3) !important;
+  opacity: 1 !important;
+  transition: all 0.3s ease !important;
+}
+
+.swiper-pagination-bullet-active {
+  background: #f6f1c9 !important;
+  width: 28px !important;
+  border-radius: 6px !important;
+  box-shadow: 0 0 12px rgba(246, 241, 201, 0.6) !important;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: #f6f1c9 !important;
+  background: rgba(12, 14, 20, 0.75);
+  backdrop-filter: blur(8px);
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 50% !important;
+  border: 1px solid rgba(246, 241, 201, 0.18) !important;
+  transition: all 0.2s ease !important;
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  background: #2a5baa !important;
+  border-color: #2a5baa !important;
+  transform: scale(1.08);
+}
+
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  font-size: 16px !important;
+  font-weight: bold !important;
+}
