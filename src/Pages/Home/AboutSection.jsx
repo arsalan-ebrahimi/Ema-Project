@@ -40,15 +40,15 @@ export default function AboutSection() {
           <div className="lg:col-span-7 flex flex-col gap-6 sm:gap-8 relative z-20">
             
             {/* Main Narrative Card with Depth */}
-            <div className="relative rounded-2xl sm:rounded-3xl bg-[#121520]/85 border border-[#f6f1c9]/15 p-5 sm:p-8 md:p-12 backdrop-blur-xl shadow-2xl shadow-black/80">
+            <div className="relative rounded-2xl sm:rounded-3xl bg-[#121520]/85 border border-[#f6f1c9]/15 p-4 sm:p-8 md:p-12 backdrop-blur-xl shadow-2xl shadow-black/80">
               
               {/* Bold Quote Callout */}
-              <p className="text-lg sm:text-2xl md:text-3xl font-extrabold text-[#f6f1c9] mb-5 sm:mb-8 leading-snug border-r-4 border-[#2a5baa] pr-4 sm:pr-5">
+              <p className="text-base sm:text-2xl md:text-3xl font-extrabold text-[#f6f1c9] mb-4 sm:mb-8 leading-snug border-r-4 border-[#2a5baa] pr-3.5 sm:pr-5">
                 «آیا این قصه ارزش گفتن دارد؟»
               </p>
 
               {/* Body Text */}
-              <p className="text-sm sm:text-base md:text-lg text-[#f6f1c9]/85 font-light leading-relaxed sm:leading-loose text-justify sm:text-right">
+              <p className="text-sm sm:text-base md:text-lg text-[#f6f1c9]/85 font-light leading-relaxed sm:leading-loose text-right">
                 {ABOUT_CONTENT.body}
               </p>
             </div>

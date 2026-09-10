@@ -5,21 +5,43 @@
 
 import React, { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Autoplay } from "swiper/modules";
-import { Camera, LayoutGrid, Sliders, Maximize2, Film } from "lucide-react";
+import { Autoplay } from "swiper/modules";
+import {
+  Camera,
+  LayoutGrid,
+  Sliders,
+  Maximize2,
+  Film,
+  ChevronRight,
+  ChevronLeft,
+} from "lucide-react";
 import { MEMORIES_DATA } from "../../Constants/memories";
 import { Badge } from "../../Components/UI";
 import Lightbox from "../../Components/Lightbox";
 
 // Import Swiper styles
 import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
 
 export default function MemoriesSection() {
   const [viewMode, setViewMode] = useState("slider"); // 'slider' | 'grid'
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [activePhotoIdx, setActivePhotoIdx] = useState(0);
+  const [swiperInstance, setSwiperInstance] = useState(null);
+  const [activeSlideIndex, setActiveSlideIndex] = useState(0);
+
+  // Calculate 5 visible dots centered dynamically on the active slide
+  const getVisibleDots = (current, total) => {
+    if (total <= 5) {
+      return Array.from({ length: total }, (_, i) => i);
+    }
+    if (current <= 1) {
+      return [0, 1, 2, 3, 4];
+    }
+    if (current >= total - 2) {
+      return [total - 5, total - 4, total - 3, total - 2, total - 1];
+    }
+    return [current - 2, current - 1, current, current + 1, current + 2];
+  };
 
   const handleImageError = (e) => {
     const currentSrc = e.currentTarget.getAttribute("src");
@@ -75,14 +97,15 @@ export default function MemoriesSection() {
           </div>
 
           {/* View Mode Toggle Controls */}
-          <div className="flex items-center gap-2 p-1.5 rounded-2xl bg-[#131622] border border-[#f6f1c9]/15 self-start md:self-auto">
+          <div className="flex items-center gap-1.5 p-1 sm:p-1.5 rounded-2xl bg-[#131622] border border-[#f6f1c9]/15 self-start md:self-auto">
             <button
               type="button"
               onClick={() => setViewMode("slider")}
-              className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold transition-all ${viewMode === "slider"
+              className={`flex items-center gap-1.5 px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl text-[11px] sm:text-xs font-bold transition-all ${
+                viewMode === "slider"
                   ? "bg-[#f6f1c9] text-[#08090c] shadow-md"
                   : "text-[#f6f1c9]/70 hover:text-[#f6f1c9]"
-                }`}
+              }`}
             >
               <Sliders className="w-3.5 h-3.5" />
               <span>اسلایدر سینمایی</span>
@@ -91,10 +114,11 @@ export default function MemoriesSection() {
             <button
               type="button"
               onClick={() => setViewMode("grid")}
-              className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold transition-all ${viewMode === "grid"
+              className={`flex items-center gap-1.5 px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl text-[11px] sm:text-xs font-bold transition-all ${
+                viewMode === "grid"
                   ? "bg-[#f6f1c9] text-[#08090c] shadow-md"
                   : "text-[#f6f1c9]/70 hover:text-[#f6f1c9]"
-                }`}
+              }`}
             >
               <LayoutGrid className="w-3.5 h-3.5" />
               <span>آلبوم یکپارچه</span>
@@ -104,19 +128,21 @@ export default function MemoriesSection() {
 
         {/* View Mode 1: Swiper Carousel */}
         {viewMode === "slider" ? (
-          <div className="relative pb-8 sm:pb-10 -mx-4 sm:mx-0">
+          <div className="relative pb-2 sm:pb-4 -mx-4 sm:mx-0">
             <Swiper
-              modules={[Navigation, Pagination, Autoplay]}
-              spaceBetween={18}
+              modules={[Autoplay]}
+              spaceBetween={16}
               slidesPerView={1.2}
               centeredSlides={false}
-              navigation={true}
-              pagination={{ clickable: true }}
               autoplay={{ delay: 3800, pauseOnMouseEnter: true }}
               grabCursor={true}
               simulateTouch={true}
               allowTouchMove={true}
               touchRatio={1.3}
+              onSwiper={setSwiperInstance}
+              onSlideChange={(swiper) =>
+                setActiveSlideIndex(swiper.realIndex ?? swiper.activeIndex)
+              }
               breakpoints={{
                 640: { slidesPerView: 1.8, spaceBetween: 20 },
                 768: { slidesPerView: 2.3, spaceBetween: 22 },
@@ -124,7 +150,7 @@ export default function MemoriesSection() {
                 1280: { slidesPerView: 3.2, spaceBetween: 26 },
                 1536: { slidesPerView: 3.5, spaceBetween: 28 },
               }}
-              className="memories-swiper !overflow-visible pb-10"
+              className="memories-swiper !overflow-visible"
             >
               {MEMORIES_DATA.map((item, index) => (
                 <SwiperSlide key={item.id}>
@@ -183,6 +209,65 @@ export default function MemoriesSection() {
                 </SwiperSlide>
               ))}
             </Swiper>
+
+            {/* Custom Cinematic Dots & Frame Controller (Flawless, perfectly centered on all screens) */}
+            <div className="flex items-center justify-center mt-5 sm:mt-7">
+              <div className="inline-flex items-center gap-2 sm:gap-3 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-[#111420]/95 border border-[#f6f1c9]/20 backdrop-blur-xl shadow-2xl shadow-black/80">
+                {/* Prev Slide Button */}
+                <button
+                  type="button"
+                  onClick={() => swiperInstance?.slidePrev()}
+                  disabled={activeSlideIndex === 0}
+                  className="p-1 rounded-full text-[#f6f1c9]/70 hover:text-[#f6f1c9] hover:bg-[#f6f1c9]/10 disabled:opacity-20 disabled:pointer-events-none transition-all focus:outline-none cursor-pointer"
+                  aria-label="قاب قبلی"
+                >
+                  <ChevronRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                </button>
+
+                {/* 5 Centered Dynamic Dots */}
+                <div className="flex items-center gap-1.5 px-1" dir="ltr">
+                  {getVisibleDots(activeSlideIndex, MEMORIES_DATA.length).map((targetIdx) => {
+                    const isActive = targetIdx === activeSlideIndex;
+                    const isAdjacent = Math.abs(targetIdx - activeSlideIndex) === 1;
+                    return (
+                      <button
+                        key={targetIdx}
+                        type="button"
+                        onClick={() => swiperInstance?.slideTo(targetIdx)}
+                        className={`rounded-full transition-all duration-300 focus:outline-none cursor-pointer ${
+                          isActive
+                            ? "w-5 sm:w-6 h-2 bg-[#f6f1c9] shadow-[0_0_10px_rgba(246,241,201,0.85)] scale-105"
+                            : isAdjacent
+                            ? "w-2 h-2 bg-[#f6f1c9]/45 hover:bg-[#f6f1c9]/80"
+                            : "w-1.5 h-1.5 bg-[#f6f1c9]/25 hover:bg-[#f6f1c9]/60"
+                        }`}
+                        aria-label={`رفتن به تصویر ${targetIdx + 1}`}
+                      />
+                    );
+                  })}
+                </div>
+
+                {/* Frame Counter */}
+                <span
+                  className="text-[11px] sm:text-xs font-mono font-bold text-[#f6f1c9]/90 tracking-wider min-w-[42px] text-center select-none"
+                  dir="ltr"
+                >
+                  {String(activeSlideIndex + 1).padStart(2, "0")} /{" "}
+                  {String(MEMORIES_DATA.length).padStart(2, "0")}
+                </span>
+
+                {/* Next Slide Button */}
+                <button
+                  type="button"
+                  onClick={() => swiperInstance?.slideNext()}
+                  disabled={activeSlideIndex >= MEMORIES_DATA.length - 1}
+                  className="p-1 rounded-full text-[#f6f1c9]/70 hover:text-[#f6f1c9] hover:bg-[#f6f1c9]/10 disabled:opacity-20 disabled:pointer-events-none transition-all focus:outline-none cursor-pointer"
+                  aria-label="قاب بعدی"
+                >
+                  <ChevronLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                </button>
+              </div>
+            </div>
           </div>
         ) : (
           /* View Mode 2: Scrapbook Masonry Grid */

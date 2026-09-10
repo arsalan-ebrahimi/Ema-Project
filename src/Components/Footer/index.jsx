@@ -79,7 +79,7 @@ export default function Footer() {
               </div>
             </div>
 
-            <p className="text-xs sm:text-sm text-[#f6f1c9]/70 leading-relaxed max-w-md font-normal text-justify sm:text-right">
+            <p className="text-xs sm:text-sm text-[#f6f1c9]/70 leading-relaxed max-w-md font-normal text-right">
               «عما سینما یک خانواده فیلمساز و روایتگر است؛ جمعی از آدم‌هایی که باور دارند هر آدم، هر اتفاق و هر ایده‌ای می‌تواند قصه‌ای برای گفتن داشته باشد.»
             </p>
 

@@ -77,27 +77,27 @@ export default function WorkTeaserSection() {
             <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/40 pointer-events-none" />
 
             {/* Top Corner Studio Badges */}
-            <div className="absolute top-4 sm:top-6 inset-x-4 sm:inset-x-6 flex items-center justify-between pointer-events-none z-10">
-              <span className="px-3.5 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-[#f6f1c9]/20 text-[11px] font-mono text-[#f6f1c9]">
+            <div className="absolute top-3 sm:top-6 inset-x-3 sm:inset-x-6 flex items-center justify-between gap-2 pointer-events-none z-10">
+              <span className="px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-[#f6f1c9]/20 text-[10px] sm:text-[11px] font-mono text-[#f6f1c9]">
                 EMA CINEMA ORIGINAL
               </span>
-              <span className="px-3 py-1.5 rounded-full bg-[#2a5baa]/70 backdrop-blur-md border border-[#2a5baa]/40 text-[11px] font-bold text-white shadow-lg">
+              <span className="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-[#2a5baa]/70 backdrop-blur-md border border-[#2a5baa]/40 text-[10px] sm:text-[11px] font-bold text-white shadow-lg">
                 کیفیت Full HD / 4K
               </span>
             </div>
 
             {/* Center Interactive Cinema Play Marquee */}
-            <div className="absolute inset-0 flex flex-col items-center justify-center z-10 p-6 text-center">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#f6f1c9] text-[#08090c] flex items-center justify-center shadow-[0_0_50px_rgba(246,241,201,0.55)] group-hover:scale-110 group-hover:shadow-[0_0_70px_rgba(246,241,201,0.8)] transition-all duration-300">
-                <Play className="w-7 h-7 sm:w-9 sm:h-9 fill-current mr-1 text-[#08090c]" />
+            <div className="absolute inset-0 flex flex-col items-center justify-center z-10 p-4 sm:p-6 text-center">
+              <div className="w-14 h-14 sm:w-20 sm:h-20 rounded-full bg-[#f6f1c9] text-[#08090c] flex items-center justify-center shadow-[0_0_50px_rgba(246,241,201,0.55)] group-hover:scale-110 group-hover:shadow-[0_0_70px_rgba(246,241,201,0.8)] transition-all duration-300">
+                <Play className="w-6 h-6 sm:w-9 sm:h-9 fill-current mr-0.5 sm:mr-1 text-[#08090c]" />
               </div>
-              <span className="mt-4 px-5 py-2 rounded-full bg-black/75 backdrop-blur-md border border-[#f6f1c9]/25 text-xs sm:text-sm font-bold text-[#f6f1c9] tracking-wide shadow-xl group-hover:bg-[#f6f1c9] group-hover:text-[#08090c] transition-colors">
+              <span className="mt-3 sm:mt-4 px-4 sm:px-5 py-1.5 sm:py-2 rounded-full bg-black/75 backdrop-blur-md border border-[#f6f1c9]/25 text-[11px] sm:text-sm font-bold text-[#f6f1c9] tracking-wide shadow-xl group-hover:bg-[#f6f1c9] group-hover:text-[#08090c] transition-colors">
                 ورود به تماشاخانه مستند «درخت آرزو»
               </span>
             </div>
 
             {/* Bottom Info Bar */}
-            <div className="absolute bottom-4 sm:bottom-6 inset-x-4 sm:inset-x-6 flex items-center justify-between text-xs text-[#f6f1c9]/70 font-light pointer-events-none z-10">
+            <div className="absolute bottom-3 sm:bottom-6 inset-x-3 sm:inset-x-6 flex items-center justify-between text-[11px] sm:text-xs text-[#f6f1c9]/70 font-light pointer-events-none z-10">
               <span className="hidden sm:inline">روایتگری در شرایط سخت اقلیمی و جنگی</span>
               <span>مدت زمان: ۲۲ دقیقه • ترافیک نیم‌بها</span>
             </div>
@@ -126,14 +126,14 @@ export default function WorkTeaserSection() {
         </div>
 
         {/* Primary CTA Button Linking to Subpage */}
-        <div className="mt-10">
+        <div className="mt-8 sm:mt-10 w-full sm:w-auto">
           <Button
             to="/work"
             variant="glow"
             size="lg"
             icon={<ArrowLeft className="w-5 h-5" />}
             iconPosition="left"
-            className="font-extrabold text-base px-10 py-4"
+            className="w-full sm:w-auto font-extrabold text-sm sm:text-base px-8 py-3.5 sm:px-10 sm:py-4"
           >
             {WORK_TEASER_CONTENT.ctaText}
           </Button>

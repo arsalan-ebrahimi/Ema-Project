@@ -6,7 +6,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import { Autoplay } from "swiper/modules";
 import {
   ArrowRight,
   ExternalLink,
@@ -15,6 +15,8 @@ import {
   Sparkles,
   Clock,
   ShieldAlert,
+  ChevronRight,
+  ChevronLeft,
 } from "lucide-react";
 import { WORK_PAGE_CONTENT } from "../../Constants/content";
 import { Badge, Button, Card } from "../../Components/UI";
@@ -22,8 +24,6 @@ import Lightbox from "../../Components/Lightbox";
 
 // Import Swiper styles
 import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
 
 const APARAT_EMBED_URL =
   "https://www.aparat.com/video/video/embed/videohash/hymb6w7/vt/frame";
@@ -32,6 +32,8 @@ const APARAT_DIRECT_URL = "https://aparat.com/v/hymb6w7";
 export default function OurWork() {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [activeBtsIdx, setActiveBtsIdx] = useState(0);
+  const [btsSwiperInstance, setBtsSwiperInstance] = useState(null);
+  const [activeBtsSlideIndex, setActiveBtsSlideIndex] = useState(0);
 
   // Behind-the-scenes photos data
   const btsPhotos = [
@@ -171,7 +173,7 @@ export default function OurWork() {
               {WORK_PAGE_CONTENT.narrativeHeading}
             </h1>
 
-            <p className="text-lg sm:text-xl md:text-2xl text-[#f6f1c9]/90 font-medium leading-relaxed sm:leading-loose text-justify mb-10">
+            <p className="text-base sm:text-xl md:text-2xl text-[#f6f1c9]/90 font-light sm:font-medium leading-relaxed sm:leading-loose text-right mb-8 sm:mb-10">
               {WORK_PAGE_CONTENT.narrativeText}
             </p>
 
@@ -212,20 +214,23 @@ export default function OurWork() {
           </div>
 
           {/* Swiper Slider for BTS Photos */}
-          <div className="relative pb-14">
+          <div className="relative pb-2 sm:pb-4">
             <Swiper
-              modules={[Navigation, Pagination, Autoplay]}
-              spaceBetween={24}
+              modules={[Autoplay]}
+              spaceBetween={20}
               slidesPerView={1.2}
-              navigation={true}
-              pagination={{ clickable: true }}
+              autoplay={{ delay: 4000, pauseOnMouseEnter: true }}
               grabCursor={true}
               simulateTouch={true}
               allowTouchMove={true}
               touchRatio={1.3}
+              onSwiper={setBtsSwiperInstance}
+              onSlideChange={(swiper) =>
+                setActiveBtsSlideIndex(swiper.realIndex ?? swiper.activeIndex)
+              }
               breakpoints={{
-                640: { slidesPerView: 2.2, spaceBetween: 24 },
-                1024: { slidesPerView: 3.2, spaceBetween: 28 },
+                640: { slidesPerView: 2.2, spaceBetween: 22 },
+                1024: { slidesPerView: 3.2, spaceBetween: 26 },
               }}
               className="bts-swiper"
             >
@@ -291,6 +296,57 @@ export default function OurWork() {
                 </SwiperSlide>
               ))}
             </Swiper>
+
+            {/* Custom BTS Dots & Frame Controller */}
+            <div className="flex items-center justify-center mt-5 sm:mt-7">
+              <div className="inline-flex items-center gap-2 sm:gap-3 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-[#111420]/95 border border-[#f6f1c9]/20 backdrop-blur-xl shadow-2xl shadow-black/80">
+                <button
+                  type="button"
+                  onClick={() => btsSwiperInstance?.slidePrev()}
+                  disabled={activeBtsSlideIndex === 0}
+                  className="p-1 rounded-full text-[#f6f1c9]/70 hover:text-[#f6f1c9] hover:bg-[#f6f1c9]/10 disabled:opacity-20 disabled:pointer-events-none transition-all focus:outline-none cursor-pointer"
+                  aria-label="قاب قبلی"
+                >
+                  <ChevronRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                </button>
+
+                <div className="flex items-center gap-1.5 px-1" dir="ltr">
+                  {btsPhotos.map((_, idx) => {
+                    const isActive = idx === activeBtsSlideIndex;
+                    return (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={() => btsSwiperInstance?.slideTo(idx)}
+                        className={`rounded-full transition-all duration-300 focus:outline-none cursor-pointer ${
+                          isActive
+                            ? "w-5 sm:w-6 h-2 bg-[#f6f1c9] shadow-[0_0_10px_rgba(246,241,201,0.85)] scale-105"
+                            : "w-2 h-2 bg-[#f6f1c9]/35 hover:bg-[#f6f1c9]/70"
+                        }`}
+                        aria-label={`رفتن به پشت صحنه ${idx + 1}`}
+                      />
+                    );
+                  })}
+                </div>
+
+                <span
+                  className="text-[11px] sm:text-xs font-mono font-bold text-[#f6f1c9]/90 tracking-wider min-w-[36px] text-center select-none"
+                  dir="ltr"
+                >
+                  {activeBtsSlideIndex + 1} / {btsPhotos.length}
+                </span>
+
+                <button
+                  type="button"
+                  onClick={() => btsSwiperInstance?.slideNext()}
+                  disabled={activeBtsSlideIndex >= btsPhotos.length - 1}
+                  className="p-1 rounded-full text-[#f6f1c9]/70 hover:text-[#f6f1c9] hover:bg-[#f6f1c9]/10 disabled:opacity-20 disabled:pointer-events-none transition-all focus:outline-none cursor-pointer"
+                  aria-label="قاب بعدی"
+                >
+                  <ChevronLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                </button>
+              </div>
+            </div>
           </div>
 
         </div>

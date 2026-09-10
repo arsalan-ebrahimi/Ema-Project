@@ -92,6 +92,8 @@
 html {
   scroll-behavior: smooth;
   color-scheme: dark;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 body {
@@ -100,6 +102,7 @@ body {
   color: var(--color-cream);
   min-height: 100vh;
   overflow-x: hidden;
+  width: 100%;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -161,63 +164,9 @@ body {
 }
 
 /* Swiper custom overrides for cinema dark theme */
-.memories-swiper {
-  padding-bottom: 44px !important;
-}
-
-.memories-swiper .swiper-pagination {
-  bottom: 4px !important;
-}
-
-.swiper-pagination-bullet {
-  background: rgba(246, 241, 201, 0.3) !important;
-  opacity: 1 !important;
-  transition: all 0.3s ease !important;
-}
-
-.swiper-pagination-bullet-active {
-  background: #f6f1c9 !important;
-  width: 28px !important;
-  border-radius: 6px !important;
-  box-shadow: 0 0 12px rgba(246, 241, 201, 0.6) !important;
-}
-
 .swiper-button-next,
 .swiper-button-prev {
-  color: #f6f1c9 !important;
-  background: rgba(12, 14, 20, 0.85);
-  backdrop-filter: blur(8px);
-  width: 44px !important;
-  height: 44px !important;
-  border-radius: 50% !important;
-  border: 1px solid rgba(246, 241, 201, 0.25) !important;
-  transition: all 0.2s ease !important;
-  z-index: 40 !important;
-}
-
-.swiper-button-next:hover,
-.swiper-button-prev:hover {
-  background: #2a5baa !important;
-  border-color: #2a5baa !important;
-  transform: scale(1.08);
-}
-
-.swiper-button-next::after,
-.swiper-button-prev::after {
-  font-size: 16px !important;
-  font-weight: bold !important;
-}
-
-@media (min-width: 1024px) {
-  .swiper-button-next,
-  .swiper-button-prev {
-    width: 52px !important;
-    height: 52px !important;
-  }
-  .swiper-button-next::after,
-  .swiper-button-prev::after {
-    font-size: 20px !important;
-  }
+  display: none !important;
 }
 
 /* ==========================================
