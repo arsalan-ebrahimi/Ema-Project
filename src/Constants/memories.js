@@ -1,9 +1,9 @@
 // ==========================================
-// Constants: Memories Photos (خاطرات ما)
-// 21 memory photos from img1 to img21
+// Constants: Memories Photos (لحظه‌های ماندگار)
+// 26 memory photos from img1 to img26
 // ==========================================
 
-export const MEMORIES_DATA = Array.from({ length: 21 }, (_, index) => {
+export const MEMORIES_DATA = Array.from({ length: 26 }, (_, index) => {
   const num = index + 1;
   const id = `img${num}`;
   
@@ -30,12 +30,17 @@ export const MEMORIES_DATA = Array.from({ length: 21 }, (_, index) => {
     "عکس یادگاری عوامل و دست‌اندرکاران",
     "بازبینی نهایی راف‌کات",
     "جشن پایان پروژه درخت آرزو",
+    "چک کردن لنز و کادربندی در لوکیشن تاریخی",
+    "صدابرداری با بوم و هدایت بازیگر در حیاط عمارت",
+    "برداشت نمای باز با تیم صحنه و تجهیزات نور",
+    "نورپردازی با سافت‌باکس و هماهنگی زاویه دوربین",
+    "ثبت سکانس حوض فیروزه‌ای با بوم و بازیگران",
   ];
 
   return {
     id,
     src: `/img${num}.webp`,
-    title: titles[index] || `خاطره ${num}`,
+    title: titles[index] || `قاب ${num}`,
     tag: `شات #${num}`,
     aspect: "aspect-[3/2]",
   };

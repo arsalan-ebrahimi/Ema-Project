@@ -16,13 +16,6 @@ export default function AboutSection() {
       <div className="absolute top-1/4 right-0 w-[500px] h-[500px] bg-[#2a5baa]/12 rounded-full blur-[130px] pointer-events-none" />
       <div className="absolute bottom-10 left-10 w-[400px] h-[400px] bg-[#f6f1c9]/6 rounded-full blur-[120px] pointer-events-none" />
 
-      {/* Decorative Film Sprocket Perforations (Top & Bottom Subtlety) */}
-      <div className="absolute top-0 inset-x-0 h-4 bg-repeat-x opacity-10 flex items-center justify-around pointer-events-none">
-        {Array.from({ length: 32 }).map((_, i) => (
-          <div key={i} className="w-2.5 h-1.5 bg-[#f6f1c9] rounded-[2px]" />
-        ))}
-      </div>
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}
@@ -49,39 +42,15 @@ export default function AboutSection() {
             {/* Main Narrative Card with Depth */}
             <div className="relative rounded-2xl sm:rounded-3xl bg-[#121520]/85 border border-[#f6f1c9]/15 p-5 sm:p-8 md:p-12 backdrop-blur-xl shadow-2xl shadow-black/80">
               
-              {/* Cinematic Watermark / Timecode */}
-              <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#f6f1c9]/10 pb-3 mb-5 sm:mb-8 text-[10px] sm:text-[11px] font-mono text-[#f6f1c9]/50">
-                <span className="flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-                  <span>VIEWFINDER 01</span>
-                </span>
-                <span>TC 00:01:24:12</span>
-                <span>24.00 FPS • RAW</span>
-              </div>
-
-              {/* Bold Quote Callout - Guaranteed 100% visible and highlighted on all screens */}
+              {/* Bold Quote Callout */}
               <p className="text-lg sm:text-2xl md:text-3xl font-extrabold text-[#f6f1c9] mb-5 sm:mb-8 leading-snug border-r-4 border-[#2a5baa] pr-4 sm:pr-5">
                 «آیا این قصه ارزش گفتن دارد؟»
               </p>
 
               {/* Body Text */}
-              <p className="text-sm sm:text-base md:text-lg text-[#f6f1c9]/85 font-light leading-relaxed sm:leading-loose text-justify sm:text-right mb-6 sm:mb-8">
+              <p className="text-sm sm:text-base md:text-lg text-[#f6f1c9]/85 font-light leading-relaxed sm:leading-loose text-justify sm:text-right">
                 {ABOUT_CONTENT.body}
               </p>
-
-              {/* Three Aesthetic Film Coordinates */}
-              <div className="grid grid-cols-3 gap-2 sm:gap-4 pt-4 sm:pt-6 border-t border-[#f6f1c9]/10">
-                {ABOUT_CONTENT.metrics.map((item, idx) => (
-                  <div key={idx} className="flex flex-col text-center sm:text-right">
-                    <span className="text-lg sm:text-2xl md:text-3xl font-extrabold text-[#f6f1c9] tracking-tight">
-                      {item.value}
-                    </span>
-                    <span className="text-[10px] sm:text-xs text-[#f6f1c9]/60 font-light mt-0.5 sm:mt-1 leading-tight">
-                      {item.label}
-                    </span>
-                  </div>
-                ))}
-              </div>
             </div>
           </div>
 
@@ -127,17 +96,19 @@ export default function AboutSection() {
                 {/* Image Placeholder with Guaranteed 4:3 Ratio */}
                 <div className="relative aspect-[4/3] w-full rounded-xl overflow-hidden bg-gradient-to-br from-[#181c28] via-[#10131c] to-[#07090d] flex flex-col items-center justify-center text-center p-6 border border-[#f6f1c9]/10">
                   <img
-                    src="/about-cinematic.webp"
-                    alt="قاب عما سینما"
+                    src="/DSC01333.JPG"
+                    alt="قاب پشت صحنه عما سینما"
                     loading="lazy"
                     decoding="async"
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                     onError={(e) => {
                       const currentSrc = e.currentTarget.getAttribute("src");
-                      if (currentSrc && currentSrc.endsWith(".webp")) {
-                        e.currentTarget.src = currentSrc.replace(".webp", ".jpg");
-                      } else if (currentSrc && currentSrc.endsWith(".jpg")) {
-                        e.currentTarget.src = currentSrc.replace(".jpg", ".png");
+                      if (currentSrc === "/DSC01333.JPG") {
+                        e.currentTarget.src = "/DSC01333.webp";
+                      } else if (currentSrc === "/DSC01333.webp") {
+                        e.currentTarget.src = "/assets/images/DSC01333.JPG";
+                      } else if (currentSrc === "/assets/images/DSC01333.JPG") {
+                        e.currentTarget.src = "/assets/images/DSC01333.webp";
                       } else {
                         e.currentTarget.style.display = "none";
                         if (e.currentTarget.nextElementSibling) {

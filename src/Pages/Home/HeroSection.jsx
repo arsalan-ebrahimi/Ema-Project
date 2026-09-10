@@ -24,6 +24,12 @@ export default function HeroSection() {
     if (el) el.scrollIntoView({ behavior: "smooth" });
   };
 
+  const scrollToJoin = (e) => {
+    if (e) e.preventDefault();
+    const el = document.getElementById("join-cta");
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <section className="relative w-full min-h-[100dvh] flex items-center justify-center overflow-hidden py-24 sm:py-32">
       
@@ -55,16 +61,21 @@ export default function HeroSection() {
       {/* Hero Content Container */}
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center justify-center pt-8 sm:pt-16">
         
-        {/* Top Eyebrow Badge */}
+        {/* Top Eyebrow: Join Call to Action Button */}
         <div className="mb-4 sm:mb-6">
-          <Badge
-            variant="cream"
-            size="md"
-            className="backdrop-blur-md bg-[#131620]/80 border-[#f6f1c9]/25 py-1.5 sm:py-2 px-4 sm:px-5 text-xs md:text-sm font-semibold tracking-wider"
+          <a
+            href="#join-cta"
+            onClick={scrollToJoin}
+            className="inline-flex items-center gap-2 px-4 sm:px-5 py-1.5 sm:py-2 rounded-full backdrop-blur-md bg-[#131620]/90 border border-[#f6f1c9]/25 text-xs md:text-sm font-bold text-[#f6f1c9] hover:bg-[#2a5baa] hover:border-[#f6f1c9]/60 hover:text-white transition-all duration-300 shadow-lg hover:shadow-[#2a5baa]/30 group cursor-pointer"
+            aria-label="دعوت به همکاری — به سوی ما"
           >
-            <span className="w-2 h-2 rounded-full bg-[#2a5baa] inline-block ml-2 animate-ping" />
-            <span>عِـمـا سـیـنـمـا • استودیو ساخت و روایت</span>
-          </Badge>
+            <Sparkles className="w-3.5 h-3.5 text-[#2a5baa] group-hover:text-[#f6f1c9] transition-colors" />
+            <span>دعوت به همکاری</span>
+            <span className="text-[11px] text-[#f6f1c9]/70 group-hover:text-white/90 transition-colors">
+              (به سوی ما)
+            </span>
+            <span className="text-xs transition-transform group-hover:-translate-x-0.5">←</span>
+          </a>
         </div>
 
         {/* Main Title */}

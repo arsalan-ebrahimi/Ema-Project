@@ -47,17 +47,17 @@ export default function WorkTeaserSection() {
             className="block relative aspect-[4/3] sm:aspect-[16/10] md:aspect-[16/9] w-full rounded-2xl sm:rounded-3xl overflow-hidden bg-gradient-to-b from-[#161a26] via-[#10121a] to-[#08090d] border-2 border-[#f6f1c9]/25 shadow-2xl shadow-black/90 transition-all duration-500 group-hover:scale-[1.015] group-hover:border-[#f6f1c9]/45 cursor-pointer"
           >
             <img
-              src="/wish-tree-poster.webp"
-              alt={`پوستر فیلم ${WORK_TEASER_CONTENT.filmTitle}`}
+              src="/میمی.png"
+              alt={`پوستر بهترین ما — فیلم ${WORK_TEASER_CONTENT.filmTitle}`}
               className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
               loading="lazy"
               decoding="async"
               onError={(e) => {
                 const currentSrc = e.currentTarget.getAttribute("src");
-                if (currentSrc && currentSrc.endsWith(".webp")) {
+                if (currentSrc === "/میمی.png") {
+                  e.currentTarget.src = "/wish-tree-poster.webp";
+                } else if (currentSrc && currentSrc.endsWith(".webp")) {
                   e.currentTarget.src = currentSrc.replace(".webp", ".jpg");
-                } else if (currentSrc && currentSrc.endsWith(".jpg")) {
-                  e.currentTarget.src = currentSrc.replace(".jpg", ".png");
                 } else {
                   e.currentTarget.style.display = "none";
                   if (e.currentTarget.nextElementSibling) {

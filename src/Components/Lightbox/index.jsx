@@ -84,11 +84,6 @@ export default function Lightbox({
           <span className="text-xs font-bold">
             {currentIndex + 1} از {images.length}
           </span>
-          {currentImage.title && (
-            <span className="text-xs text-[#f6f1c9]/70 border-r border-[#f6f1c9]/20 pr-2 mr-1">
-              {currentImage.title}
-            </span>
-          )}
         </div>
 
         <button
@@ -138,7 +133,7 @@ export default function Lightbox({
         <div className="relative rounded-2xl overflow-hidden border border-[#f6f1c9]/20 shadow-2xl shadow-black/80 bg-[#0d0f15] max-h-[75vh]">
           <img
             src={currentImage.src}
-            alt={currentImage.title || "عکس خاطرات عما"}
+            alt="عکس لحظه‌های ماندگار عما"
             className="w-full h-full object-contain max-h-[75vh]"
             onError={handleImageError}
             onLoad={handleImageLoad}
@@ -148,23 +143,11 @@ export default function Lightbox({
             <div className="w-16 h-16 rounded-2xl bg-[#2a5baa]/20 border border-[#2a5baa]/40 flex items-center justify-center mb-4">
               <Film className="w-8 h-8 text-[#f6f1c9]" />
             </div>
-            <p className="text-lg font-bold text-[#f6f1c9] mb-1">
-              {currentImage.title || `خاطره ${currentIndex + 1}`}
-            </p>
             <p className="text-xs text-[#f6f1c9]/60 font-mono tracking-wider">
               {currentImage.id || `IMG_${currentIndex + 1}.JPG`} • FRAME 35MM
             </p>
           </div>
         </div>
-
-        {/* Caption */}
-        {currentImage.title && (
-          <div className="mt-4 text-center">
-            <p className="text-sm font-semibold text-[#f6f1c9]">
-              {currentImage.title}
-            </p>
-          </div>
-        )}
       </div>
     </div>
   );

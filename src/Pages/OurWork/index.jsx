@@ -26,8 +26,8 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 
 const APARAT_EMBED_URL =
-  "https://www.aparat.com/video/video/embed/videohash/ege78id/vt/frame";
-const APARAT_DIRECT_URL = "https://aparat.com/v/ege78id";
+  "https://www.aparat.com/video/video/embed/videohash/hymb6w7/vt/frame";
+const APARAT_DIRECT_URL = "https://aparat.com/v/hymb6w7";
 
 export default function OurWork() {
   const [lightboxOpen, setLightboxOpen] = useState(false);

@@ -68,10 +68,10 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           
-          {/* Logo & Brand Name */}
+          {/* Logo & Brand Icon */}
           <Link
             to="/"
-            className="flex items-center gap-3 group focus:outline-none"
+            className="flex items-center group focus:outline-none"
             aria-label="صفحه اصلی عما سینما"
           >
             <div className="relative w-10 h-10 md:w-11 md:h-11 rounded-xl overflow-hidden bg-[#131620] border border-[#f6f1c9]/20 flex items-center justify-center transition-transform duration-300 group-hover:scale-105 group-hover:border-[#f6f1c9]/50 shadow-md">
@@ -80,22 +80,17 @@ export default function Header() {
                 alt="لوگوی عما سینما"
                 className="w-full h-full object-cover"
                 onError={(e) => {
-                  e.target.style.display = "none";
-                  e.target.nextSibling.style.display = "flex";
+                  if (e.target.src.includes('/assets/images/')) {
+                    e.target.src = '/logo-cream.png';
+                  } else {
+                    e.target.style.display = "none";
+                    if (e.target.nextSibling) e.target.nextSibling.style.display = "flex";
+                  }
                 }}
               />
               <div className="hidden w-full h-full items-center justify-center text-[#f6f1c9]">
                 <Film className="w-5 h-5 text-[#f6f1c9]" />
               </div>
-            </div>
-
-            <div className="flex flex-col">
-              <span className="text-lg md:text-xl font-extrabold text-[#f6f1c9] tracking-tight group-hover:text-white transition-colors">
-                عِـمـا سـیـنـمـا
-              </span>
-              <span className="text-[10px] md:text-xs text-[#f6f1c9]/60 font-light -mt-0.5 tracking-wider">
-                خانواده فیلمساز و روایتگر
-              </span>
             </div>
           </Link>
 

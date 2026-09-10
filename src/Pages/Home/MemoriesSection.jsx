@@ -1,12 +1,12 @@
 // ==========================================
 // Page Section: Memories (خاطرات ما)
-// Dynamic photo album for img1 to img21 with Swiper Carousel & Masonry view toggle
+// Dynamic photo album with Swiper Carousel & Masonry view toggle
 // ==========================================
 
 import React, { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
-import { Camera, LayoutGrid, Sliders, Maximize2, Sparkles, Film } from "lucide-react";
+import { Camera, LayoutGrid, Sliders, Maximize2, Film } from "lucide-react";
 import { MEMORIES_DATA } from "../../Constants/memories";
 import { Badge } from "../../Components/UI";
 import Lightbox from "../../Components/Lightbox";
@@ -51,30 +51,27 @@ export default function MemoriesSection() {
 
   return (
     <section id="memories" className="relative pt-20 md:pt-28 pb-12 md:pb-16 bg-[#0a0c12] overflow-hidden">
-      
+
       {/* Background ambient glow */}
       <div className="absolute top-1/2 left-1/4 w-[600px] h-[600px] bg-[#2a5baa]/10 rounded-full blur-[160px] pointer-events-none" />
       <div className="absolute bottom-10 right-10 w-[400px] h-[400px] bg-[#f6f1c9]/8 rounded-full blur-[140px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        
+
         {/* Section Header & View Mode Switcher */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-16 gap-6">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 md:mb-12 gap-6">
           <div>
             <Badge
               variant="cream"
               size="md"
-              className="mb-4 text-xs font-semibold tracking-wider"
+              className="mb-3 text-xs font-semibold tracking-wider"
               icon={<Camera className="w-3.5 h-3.5 text-[#2a5baa]" />}
             >
-              خاطرات ما
+              آلبوم تصاویر
             </Badge>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-[#f6f1c9] tracking-tight mb-3">
-              لحظه‌های ماندگار پشت صحنه
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-[#f6f1c9] tracking-tight">
+              لحظه‌های ماندگار خانواده عما
             </h2>
-            <p className="text-sm sm:text-base text-[#f6f1c9]/70 font-light max-w-xl">
-              ثبت شور، تلاش و زیست مشترک ۲۱ قاب از جریان ساخت و با هم بودن در خانواده عما.
-            </p>
           </div>
 
           {/* View Mode Toggle Controls */}
@@ -82,11 +79,10 @@ export default function MemoriesSection() {
             <button
               type="button"
               onClick={() => setViewMode("slider")}
-              className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
-                viewMode === "slider"
+              className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold transition-all ${viewMode === "slider"
                   ? "bg-[#f6f1c9] text-[#08090c] shadow-md"
                   : "text-[#f6f1c9]/70 hover:text-[#f6f1c9]"
-              }`}
+                }`}
             >
               <Sliders className="w-3.5 h-3.5" />
               <span>اسلایدر سینمایی</span>
@@ -95,11 +91,10 @@ export default function MemoriesSection() {
             <button
               type="button"
               onClick={() => setViewMode("grid")}
-              className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
-                viewMode === "grid"
+              className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold transition-all ${viewMode === "grid"
                   ? "bg-[#f6f1c9] text-[#08090c] shadow-md"
                   : "text-[#f6f1c9]/70 hover:text-[#f6f1c9]"
-              }`}
+                }`}
             >
               <LayoutGrid className="w-3.5 h-3.5" />
               <span>آلبوم یکپارچه</span>
@@ -109,10 +104,10 @@ export default function MemoriesSection() {
 
         {/* View Mode 1: Swiper Carousel */}
         {viewMode === "slider" ? (
-          <div className="relative pb-8">
+          <div className="relative pb-8 sm:pb-10 -mx-4 sm:mx-0">
             <Swiper
               modules={[Navigation, Pagination, Autoplay]}
-              spaceBetween={20}
+              spaceBetween={18}
               slidesPerView={1.2}
               centeredSlides={false}
               navigation={true}
@@ -123,23 +118,25 @@ export default function MemoriesSection() {
               allowTouchMove={true}
               touchRatio={1.3}
               breakpoints={{
-                640: { slidesPerView: 2.2, spaceBetween: 24 },
-                1024: { slidesPerView: 3.2, spaceBetween: 28 },
-                1280: { slidesPerView: 4.2, spaceBetween: 28 },
+                640: { slidesPerView: 1.8, spaceBetween: 20 },
+                768: { slidesPerView: 2.3, spaceBetween: 22 },
+                1024: { slidesPerView: 2.8, spaceBetween: 24 },
+                1280: { slidesPerView: 3.2, spaceBetween: 26 },
+                1536: { slidesPerView: 3.5, spaceBetween: 28 },
               }}
-              className="memories-swiper !overflow-visible"
+              className="memories-swiper !overflow-visible pb-10"
             >
               {MEMORIES_DATA.map((item, index) => (
                 <SwiperSlide key={item.id}>
                   <div
                     onClick={() => openLightbox(index)}
-                    className="group relative rounded-2xl overflow-hidden bg-[#111420] border border-[#f6f1c9]/15 shadow-xl shadow-black/60 cursor-pointer transition-all duration-300 hover:border-[#f6f1c9]/40 hover:-translate-y-1.5"
+                    className="group relative rounded-2xl overflow-hidden bg-[#111420] border border-[#f6f1c9]/15 shadow-lg md:shadow-xl md:shadow-black/70 cursor-pointer transition-all duration-300 hover:border-[#f6f1c9]/40 hover:-translate-y-1.5"
                   >
-                    {/* Fixed aspect ratio card matching 3:2 camera stills */}
-                    <div className="relative aspect-[3/2] w-full overflow-hidden bg-gradient-to-br from-[#181c2b] to-[#0a0c12]">
+                    {/* Balanced cinema frame: compact, refined and elegant */}
+                    <div className="relative aspect-[3/2] h-[200px] sm:h-[230px] md:h-[260px] lg:h-[290px] xl:h-[310px] w-full overflow-hidden bg-gradient-to-br from-[#181c2b] to-[#0a0c12]">
                       <img
                         src={item.src}
-                        alt={item.title}
+                        alt="لحظه‌های ماندگار خانواده عما"
                         loading="lazy"
                         decoding="async"
                         className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
@@ -148,33 +145,36 @@ export default function MemoriesSection() {
                       />
 
                       {/* Film Still Placeholder Artwork */}
-                      <div className="hidden w-full h-full flex-col justify-between p-5 bg-gradient-to-t from-[#06080d] via-[#101422] to-[#171c2e] text-right">
-                        <div className="flex items-center justify-between text-[11px] font-mono text-[#f6f1c9]/50">
-                          <span className="text-[#2a5baa] font-bold">{item.tag}</span>
-                          <span>FRAME 35MM</span>
-                        </div>
-
-                        <div className="my-auto flex flex-col items-center justify-center text-center">
-                          <div className="w-12 h-12 rounded-xl bg-[#2a5baa]/20 border border-[#2a5baa]/40 flex items-center justify-center mb-3 text-[#f6f1c9]">
-                            <Film className="w-6 h-6" />
-                          </div>
-                          <p className="text-sm font-bold text-[#f6f1c9] line-clamp-2 px-2">
-                            {item.title}
-                          </p>
-                        </div>
-
-                        <div className="text-[10px] font-mono text-[#f6f1c9]/40 flex justify-between border-t border-[#f6f1c9]/10 pt-3">
-                          <span>{item.id.toUpperCase()}</span>
-                          <span>EMA ARCHIVE</span>
+                      <div className="hidden w-full h-full flex-col justify-center items-center p-4 bg-gradient-to-t from-[#06080d] via-[#101422] to-[#171c2e]">
+                        <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-[#2a5baa]/20 border border-[#2a5baa]/40 flex items-center justify-center text-[#f6f1c9]">
+                          <Film className="w-5 h-5 md:w-6 md:h-6" />
                         </div>
                       </div>
 
-                      {/* Hover Overlay with Zoom Icon */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-5">
-                        <div className="flex items-center justify-between text-[#f6f1c9]">
-                          <span className="text-xs font-bold">{item.title}</span>
-                          <div className="p-2 rounded-full bg-[#f6f1c9] text-[#08090c]">
-                            <Maximize2 className="w-3.5 h-3.5" />
+                      {/* Cinematic Viewfinder Focus Overlay (No Center Button Blocking Photo) */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-black/35 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none flex flex-col justify-between p-3.5 sm:p-4">
+                        {/* Top Bar: Viewfinder Frame Stamp */}
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-black/60 backdrop-blur-sm border border-[#f6f1c9]/20 text-[10px] font-mono text-[#f6f1c9]/85">
+                            <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
+                            <span>REC</span>
+                          </div>
+                          <span className="text-[10px] font-mono text-[#f6f1c9]/60 tracking-wider">
+                            35MM STILL
+                          </span>
+                        </div>
+
+                        {/* Viewfinder Reticle Corners */}
+                        <div className="absolute top-2.5 right-2.5 w-3.5 h-3.5 border-t-2 border-r-2 border-[#f6f1c9]/70 rounded-tr pointer-events-none" />
+                        <div className="absolute top-2.5 left-2.5 w-3.5 h-3.5 border-t-2 border-l-2 border-[#f6f1c9]/70 rounded-tl pointer-events-none" />
+                        <div className="absolute bottom-2.5 right-2.5 w-3.5 h-3.5 border-b-2 border-r-2 border-[#f6f1c9]/70 rounded-br pointer-events-none" />
+                        <div className="absolute bottom-2.5 left-2.5 w-3.5 h-3.5 border-b-2 border-l-2 border-[#f6f1c9]/70 rounded-bl pointer-events-none" />
+
+                        {/* Bottom Floating Glass Capsule Pill */}
+                        <div className="flex items-center justify-center transform translate-y-1.5 group-hover:translate-y-0 transition-transform duration-300">
+                          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0d101a]/90 backdrop-blur-md border border-[#f6f1c9]/35 text-[#f6f1c9] shadow-xl text-[11px] sm:text-xs font-medium">
+                            <Maximize2 className="w-3.5 h-3.5 text-[#2a5baa]" />
+                            <span>مشاهده در ابعاد بزرگ</span>
                           </div>
                         </div>
                       </div>
@@ -196,7 +196,7 @@ export default function MemoriesSection() {
                 <div className={`relative ${item.aspect} w-full overflow-hidden bg-gradient-to-br from-[#181c2b] to-[#0a0c12]`}>
                   <img
                     src={item.src}
-                    alt={item.title}
+                    alt="لحظه‌های ماندگار خانواده عما"
                     loading="lazy"
                     decoding="async"
                     className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
@@ -205,23 +205,15 @@ export default function MemoriesSection() {
                   />
 
                   {/* Fallback frame */}
-                  <div className="hidden w-full h-full flex-col justify-between p-3.5 bg-gradient-to-t from-[#06080d] via-[#101422] to-[#171c2e] text-right">
-                    <div className="flex items-center justify-between text-[10px] font-mono text-[#f6f1c9]/50">
-                      <span className="text-[#2a5baa] font-bold">{item.tag}</span>
-                    </div>
-                    <p className="text-xs font-bold text-[#f6f1c9] line-clamp-2 my-auto text-center">
-                      {item.title}
-                    </p>
-                    <span className="text-[9px] font-mono text-[#f6f1c9]/40">
-                      {item.id.toUpperCase()}
-                    </span>
+                  <div className="hidden w-full h-full flex-col justify-center items-center p-3.5 bg-gradient-to-t from-[#06080d] via-[#101422] to-[#171c2e]">
+                    <Film className="w-6 h-6 text-[#f6f1c9]/70" />
                   </div>
 
-                  {/* Hover Overlay */}
-                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center p-3 text-center">
-                    <span className="text-xs font-bold text-[#f6f1c9]">
-                      {item.title}
-                    </span>
+                  {/* Hover Overlay without text */}
+                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
+                    <div className="p-2.5 rounded-full bg-[#f6f1c9]/90 text-[#08090c] shadow-lg">
+                      <Maximize2 className="w-3.5 h-3.5" />
+                    </div>
                   </div>
                 </div>
               </div>
