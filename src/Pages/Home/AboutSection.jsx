@@ -66,33 +66,6 @@ export default function AboutSection() {
               {/* Camera Monitor Card with Aspect Ratio Reserved */}
               <div className="relative rounded-2xl bg-[#0d0f16] border-2 border-[#f6f1c9]/25 p-3 sm:p-4 shadow-2xl shadow-black overflow-hidden group">
                 
-                {/* Viewfinder HUD Overlays (Crosshairs, Frame Marks) */}
-                <div className="absolute top-6 right-6 z-20 flex items-center gap-2 bg-black/60 backdrop-blur-sm px-2.5 py-1 rounded-md text-[10px] font-mono text-red-400 border border-red-500/30">
-                  <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
-                  <span>REC [4K]</span>
-                </div>
-
-                <div className="absolute top-6 left-6 z-20 bg-black/60 backdrop-blur-sm px-2.5 py-1 rounded-md text-[10px] font-mono text-[#f6f1c9]/80 border border-[#f6f1c9]/20">
-                  <span>ISO 800 • 1/50</span>
-                </div>
-
-                <div className="absolute bottom-6 left-6 z-20 bg-black/60 backdrop-blur-sm px-2.5 py-1 rounded-md text-[10px] font-mono text-[#f6f1c9]/80 border border-[#f6f1c9]/20">
-                  <span>50MM F/1.2</span>
-                </div>
-
-                {/* Viewfinder Center Crosshairs */}
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20 opacity-30">
-                  <div className="w-10 h-10 border border-dashed border-[#f6f1c9] rounded-full flex items-center justify-center">
-                    <div className="w-2 h-2 bg-[#f6f1c9] rounded-full" />
-                  </div>
-                </div>
-
-                {/* Corner Frame Crop Brackets */}
-                <div className="absolute top-7 right-7 w-4 h-4 border-t-2 border-r-2 border-[#f6f1c9]/60 z-20 pointer-events-none" />
-                <div className="absolute top-7 left-7 w-4 h-4 border-t-2 border-l-2 border-[#f6f1c9]/60 z-20 pointer-events-none" />
-                <div className="absolute bottom-7 right-7 w-4 h-4 border-b-2 border-r-2 border-[#f6f1c9]/60 z-20 pointer-events-none" />
-                <div className="absolute bottom-7 left-7 w-4 h-4 border-b-2 border-l-2 border-[#f6f1c9]/60 z-20 pointer-events-none" />
-
                 {/* Image Placeholder with Guaranteed 4:3 Ratio */}
                 <div className="relative aspect-[4/3] w-full rounded-xl overflow-hidden bg-gradient-to-br from-[#181c28] via-[#10131c] to-[#07090d] flex flex-col items-center justify-center text-center p-6 border border-[#f6f1c9]/10">
                   <img
@@ -136,10 +109,37 @@ export default function AboutSection() {
                       PLACEHOLDER • ASPECT RATIO 4:3
                     </span>
                   </div>
+
+                  {/* Viewfinder HUD Overlays (Crosshairs, Frame Marks, Badges) */}
+                  <div className="absolute top-3.5 right-3.5 sm:top-4 sm:right-4 z-20 flex items-center gap-2 bg-black/60 backdrop-blur-sm px-2.5 py-1 rounded-md text-[10px] font-mono text-red-400 border border-red-500/30">
+                    <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
+                    <span>REC [4K]</span>
+                  </div>
+
+                  <div className="absolute top-3.5 left-3.5 sm:top-4 sm:left-4 z-20 bg-black/60 backdrop-blur-sm px-2.5 py-1 rounded-md text-[10px] font-mono text-[#f6f1c9]/80 border border-[#f6f1c9]/20">
+                    <span>ISO 800 • 1/50</span>
+                  </div>
+
+                  <div className="absolute bottom-3.5 left-3.5 sm:bottom-4 sm:left-4 z-20 bg-black/60 backdrop-blur-sm px-2.5 py-1 rounded-md text-[10px] font-mono text-[#f6f1c9]/80 border border-[#f6f1c9]/20">
+                    <span>50MM F/1.2</span>
+                  </div>
+
+                  {/* Viewfinder Center Crosshairs */}
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20 opacity-30">
+                    <div className="w-10 h-10 border border-dashed border-[#f6f1c9] rounded-full flex items-center justify-center">
+                      <div className="w-2 h-2 bg-[#f6f1c9] rounded-full" />
+                    </div>
+                  </div>
+
+                  {/* Corner Frame Crop Brackets */}
+                  <div className="absolute top-3 right-3 w-4 h-4 border-t-2 border-r-2 border-[#f6f1c9]/60 z-20 pointer-events-none" />
+                  <div className="absolute top-3 left-3 w-4 h-4 border-t-2 border-l-2 border-[#f6f1c9]/60 z-20 pointer-events-none" />
+                  <div className="absolute bottom-3 right-3 w-4 h-4 border-b-2 border-r-2 border-[#f6f1c9]/60 z-20 pointer-events-none" />
+                  <div className="absolute bottom-3 left-3 w-4 h-4 border-b-2 border-l-2 border-[#f6f1c9]/60 z-20 pointer-events-none" />
                 </div>
 
                 {/* Bottom Bar Info */}
-                <div className="mt-3 flex items-center justify-between text-[11px] text-[#f6f1c9]/60 font-mono px-2">
+                <div className="mt-3.5 pt-2 border-t border-[#f6f1c9]/10 flex items-center justify-between text-[11px] text-[#f6f1c9]/60 font-mono px-2">
                   <span>FRAME: EMA_STILL_01</span>
                   <span>ASPECT 1.33:1</span>
                 </div>
