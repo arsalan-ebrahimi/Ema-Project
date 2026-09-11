@@ -43,15 +43,10 @@ export default function Header() {
         const element = document.getElementById(targetId);
         if (element) {
           element.scrollIntoView({ behavior: "smooth" });
+          window.history.pushState(null, "", href);
         }
       } else {
-        navigate("/");
-        setTimeout(() => {
-          const element = document.getElementById(targetId);
-          if (element) {
-            element.scrollIntoView({ behavior: "smooth" });
-          }
-        }, 150);
+        navigate(href);
       }
       setMobileMenuOpen(false);
     }

@@ -128,45 +128,46 @@ export default function MemoriesSection() {
 
         {/* View Mode 1: Swiper Carousel */}
         {viewMode === "slider" ? (
-          <div className="relative pb-2 sm:pb-4 -mx-4 sm:mx-0">
+          <div className="relative pb-2 sm:pb-4">
             <Swiper
               modules={[Autoplay]}
-              spaceBetween={16}
+              spaceBetween={14}
               slidesPerView={1.2}
-              centeredSlides={false}
               loop={true}
-              autoplay={{ delay: 3800, pauseOnMouseEnter: true, disableOnInteraction: false }}
+              speed={450}
+              watchSlidesProgress={true}
+              autoplay={{ delay: 4000, pauseOnMouseEnter: true, disableOnInteraction: false }}
               grabCursor={true}
               simulateTouch={true}
               allowTouchMove={true}
-              touchRatio={1.3}
+              touchRatio={1.2}
+              resistanceRatio={0.7}
               onSwiper={setSwiperInstance}
               onSlideChange={(swiper) =>
                 setActiveSlideIndex(swiper.realIndex ?? swiper.activeIndex)
               }
               breakpoints={{
-                640: { slidesPerView: 1.8, spaceBetween: 20 },
-                768: { slidesPerView: 2.3, spaceBetween: 22 },
-                1024: { slidesPerView: 2.8, spaceBetween: 24 },
-                1280: { slidesPerView: 3.2, spaceBetween: 26 },
-                1536: { slidesPerView: 3.5, spaceBetween: 28 },
+                480: { slidesPerView: 1.4, spaceBetween: 16 },
+                640: { slidesPerView: 2.1, spaceBetween: 20 },
+                1024: { slidesPerView: 2.8, spaceBetween: 22 },
+                1280: { slidesPerView: 3.2, spaceBetween: 24 },
               }}
-              className="memories-swiper !overflow-visible"
+              className="memories-swiper rounded-2xl overflow-hidden"
             >
               {MEMORIES_DATA.map((item, index) => (
                 <SwiperSlide key={item.id}>
                   <div
                     onClick={() => openLightbox(index)}
-                    className="group relative rounded-2xl overflow-hidden bg-[#111420] border border-[#f6f1c9]/15 shadow-lg md:shadow-xl md:shadow-black/70 cursor-pointer transition-all duration-300 hover:border-[#f6f1c9]/40 hover:-translate-y-1.5"
+                    className="group relative rounded-2xl overflow-hidden bg-[#111420] border border-[#f6f1c9]/15 shadow-xl shadow-black/70 cursor-pointer transition-all duration-300 hover:border-[#f6f1c9]/40 hover:-translate-y-1.5"
                   >
-                    {/* Balanced cinema frame: compact, refined and elegant */}
-                    <div className="relative aspect-[3/2] h-[200px] sm:h-[230px] md:h-[260px] lg:h-[290px] xl:h-[310px] w-full overflow-hidden bg-gradient-to-br from-[#181c2b] to-[#0a0c12]">
+                    {/* Balanced cinema frame: responsive widescreen aspect-ratio matching Work page */}
+                    <div className="relative aspect-[16/10] sm:aspect-[16/9] w-full overflow-hidden bg-gradient-to-br from-[#181c2b] to-[#0a0c12]">
                       <img
                         src={item.src}
                         alt="لحظه‌های ماندگار خانواده عما"
                         loading="lazy"
                         decoding="async"
-                        className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                        className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105 will-change-transform"
                         onError={handleImageError}
                         onLoad={handleImageLoad}
                       />
@@ -178,12 +179,12 @@ export default function MemoriesSection() {
                         </div>
                       </div>
 
-                      {/* Cinematic Viewfinder Focus Overlay (No Center Button Blocking Photo) */}
+                      {/* Cinematic Viewfinder Focus Overlay */}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-black/35 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none flex flex-col justify-between p-3.5 sm:p-4">
                         {/* Top Bar: Viewfinder Frame Stamp */}
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-black/60 backdrop-blur-sm border border-[#f6f1c9]/20 text-[10px] font-mono text-[#f6f1c9]/85">
-                            <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
+                            <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
                             <span>REC</span>
                           </div>
                           <span className="text-[10px] font-mono text-[#f6f1c9]/60 tracking-wider">

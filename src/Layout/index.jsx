@@ -10,14 +10,28 @@ import Header from "../Components/Header";
 import Footer from "../Components/Footer";
 
 export default function Layout() {
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
 
-  // Scroll to top on page route changes
+  // Scroll to anchor or top on route/hash changes
   useEffect(() => {
-    if (!window.location.hash) {
+    if (hash) {
+      const targetId = hash.replace("#", "");
+      let attempts = 0;
+      const scrollIntoTarget = () => {
+        const element = document.getElementById(targetId);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth" });
+        } else if (attempts < 25) {
+          attempts++;
+          setTimeout(scrollIntoTarget, 50);
+        }
+      };
+      const timer = setTimeout(scrollIntoTarget, 60);
+      return () => clearTimeout(timer);
+    } else {
       window.scrollTo(0, 0);
     }
-  }, [pathname]);
+  }, [pathname, hash]);
 
   return (
     <div dir="rtl" className="min-h-screen flex flex-col bg-[#08090c] text-[#f6f1c9] relative overflow-x-hidden">
