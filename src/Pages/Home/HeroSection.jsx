@@ -15,25 +15,92 @@ export default function HeroSection() {
     const video = videoRef.current;
     if (!video) return;
 
-    video.muted = true;
+    // Force all native mobile browser autoplay properties & DOM attributes
     video.defaultMuted = true;
+    video.muted = true;
+    video.playsInline = true;
+    video.setAttribute("muted", "");
+    video.setAttribute("playsinline", "");
+    video.setAttribute("webkit-playsinline", "true");
+    video.setAttribute("x5-playsinline", "true");
 
-    // Direct play attempt
-    const playPromise = video.play();
-    if (playPromise !== undefined) {
-      playPromise.catch(() => {
-        // Fallback on first touch/scroll/click if browser blocks autoplay
-        const unlock = () => {
-          video.play().catch(() => {});
-          window.removeEventListener("touchstart", unlock);
-          window.removeEventListener("scroll", unlock);
-          window.removeEventListener("click", unlock);
-        };
-        window.addEventListener("touchstart", unlock, { passive: true, once: true });
-        window.addEventListener("scroll", unlock, { passive: true, once: true });
-        window.addEventListener("click", unlock, { passive: true, once: true });
-      });
-    }
+    let isPlaying = false;
+
+    const attemptPlay = () => {
+      if (!video) return;
+      if (isPlaying || !video.paused) return;
+
+      video.defaultMuted = true;
+      video.muted = true;
+
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            isPlaying = true;
+          })
+          .catch(() => {
+            // Autoplay delayed or restricted until metadata/buffer is ready
+          });
+      }
+    };
+
+    // 1. Immediate play attempt
+    attemptPlay();
+
+    // 2. Play immediately as soon as video buffer/metadata is ready on mobile
+    video.addEventListener("loadedmetadata", attemptPlay);
+    video.addEventListener("loadeddata", attemptPlay);
+    video.addEventListener("canplay", attemptPlay);
+    video.addEventListener("canplaythrough", attemptPlay);
+
+    // 3. Staggered retries for mobile devices that delay play until initial render completes
+    const timers = [
+      setTimeout(attemptPlay, 80),
+      setTimeout(attemptPlay, 250),
+      setTimeout(attemptPlay, 600),
+      setTimeout(attemptPlay, 1200),
+    ];
+
+    // 4. Tab visibility handler (resumes playback if mobile browser suspends background tab)
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        attemptPlay();
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    // 5. Fallback gesture listener only for devices with ultra-strict OS battery saver (Low Power Mode)
+    const onUserInteraction = () => {
+      attemptPlay();
+      if (isPlaying || !video.paused) {
+        cleanupInteractionListeners();
+      }
+    };
+
+    const cleanupInteractionListeners = () => {
+      window.removeEventListener("touchstart", onUserInteraction);
+      window.removeEventListener("touchmove", onUserInteraction);
+      window.removeEventListener("scroll", onUserInteraction);
+      window.removeEventListener("click", onUserInteraction);
+      window.removeEventListener("pointerdown", onUserInteraction);
+    };
+
+    window.addEventListener("touchstart", onUserInteraction, { passive: true });
+    window.addEventListener("touchmove", onUserInteraction, { passive: true });
+    window.addEventListener("scroll", onUserInteraction, { passive: true });
+    window.addEventListener("click", onUserInteraction, { passive: true });
+    window.addEventListener("pointerdown", onUserInteraction, { passive: true });
+
+    return () => {
+      video.removeEventListener("loadedmetadata", attemptPlay);
+      video.removeEventListener("loadeddata", attemptPlay);
+      video.removeEventListener("canplay", attemptPlay);
+      video.removeEventListener("canplaythrough", attemptPlay);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      cleanupInteractionListeners();
+      timers.forEach(clearTimeout);
+    };
   }, []);
 
   const scrollToAbout = () => {
@@ -58,9 +125,10 @@ export default function HeroSection() {
           loop
           muted
           playsInline
-          src="/hero-film.mp4"
+          webkit-playsinline="true"
+          x5-playsinline="true"
           preload="auto"
-          className="w-full h-full object-cover opacity-50 transition-opacity duration-1000 scale-105"
+          className="w-full h-full object-cover opacity-50 transition-opacity duration-1000 scale-105 pointer-events-none"
           poster="/hero-poster.webp"
         >
           <source src="/hero-film.mp4" type="video/mp4" />

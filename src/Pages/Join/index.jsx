@@ -12,7 +12,6 @@ import {
   ExternalLink,
   ShieldCheck,
   Loader2,
-  CheckCircle2,
   Send,
   Instagram,
   Compass,
@@ -93,6 +92,7 @@ export default function Join() {
               href={PORSKAD_FORM_URL}
               target="_blank"
               rel="noopener noreferrer"
+              referrerPolicy="no-referrer"
               className="inline-flex items-center gap-2 px-4 sm:px-5 py-2 rounded-full text-xs font-bold bg-[#131724] text-[#f6f1c9]/90 hover:text-white hover:bg-[#2a5baa] border border-[#f6f1c9]/20 hover:border-[#f6f1c9]/50 transition-all shadow-md active:scale-95 group"
             >
               <span>باز کردن فرم در پنجره اختصاصی پرس‌کاد</span>
@@ -138,6 +138,7 @@ export default function Join() {
             <iframe
               src={PORSKAD_FORM_URL}
               title="فرم عضویت عما سینما در پرس‌کاد"
+              referrerPolicy="no-referrer"
               onLoad={() => setIframeLoading(false)}
               className={`w-full h-full min-h-[720px] sm:min-h-[820px] md:min-h-[880px] border-0 bg-[#0c0e16] transition-opacity duration-500 ${
                 iframeLoading ? "opacity-0" : "opacity-100"
@@ -146,20 +147,17 @@ export default function Join() {
             />
           </div>
 
-          {/* Bottom Trust & Direct Link Bar */}
-          <div className="px-3.5 sm:px-5 py-2.5 sm:py-3 border-t border-[#f6f1c9]/10 bg-[#0d101a]/80 flex flex-col xs:flex-row items-center justify-between gap-2.5 text-[11px] sm:text-xs text-[#f6f1c9]/60">
-            <div className="flex items-center gap-1.5 text-center xs:text-right">
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-              <span>پاسخ‌ها به صورت مستقیم و محرمانه توسط تیم تولید عما بررسی می‌شوند.</span>
-            </div>
-
+          {/* Bottom Action Bar: Open in Porskad Button */}
+          <div className="px-4 py-3 sm:py-3.5 border-t border-[#f6f1c9]/10 bg-[#0d101a]/80 flex items-center justify-center">
             <a
               href={PORSKAD_FORM_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[#f6f1c9]/80 hover:text-[#f6f1c9] underline underline-offset-4 transition-colors shrink-0"
+              referrerPolicy="no-referrer"
+              className="inline-flex items-center justify-center gap-2 px-5 py-2 rounded-xl bg-[#151928] hover:bg-[#2a5baa] border border-[#f6f1c9]/20 hover:border-[#f6f1c9]/45 text-xs sm:text-sm font-bold text-[#f6f1c9] hover:text-white transition-all duration-300 shadow-md hover:shadow-[#2a5baa]/25 group active:scale-95"
             >
-              لینک مستقیم فرم
+              <span>باز کردن فرم در پرس‌کاد</span>
+              <ExternalLink className="w-3.5 h-3.5 text-[#2a5baa] group-hover:text-white transition-colors" />
             </a>
           </div>
 
