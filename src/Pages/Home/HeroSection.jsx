@@ -3,22 +3,95 @@
 // Fullscreen cinematic video background with bold typography & call to actions
 // ==========================================
 
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { Play, ChevronDown, Sparkles } from "lucide-react";
 import { HERO_CONTENT } from "../../Constants/content";
 import { Button, Badge } from "../../Components/UI";
 
 export default function HeroSection() {
   const videoRef = useRef(null);
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
 
   useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.defaultMuted = true;
-      videoRef.current.muted = true;
-      videoRef.current.play().catch((err) => {
-        console.warn("Autoplay was prevented by browser policy:", err);
-      });
-    }
+    const video = videoRef.current;
+    if (!video) return;
+
+    // 1. Force muted properties & attributes (crucial for iOS Safari & strict browser policies)
+    video.muted = true;
+    video.defaultMuted = true;
+    video.volume = 0;
+    video.setAttribute("muted", "");
+    video.setAttribute("playsinline", "");
+    video.setAttribute("webkit-playsinline", "true");
+
+    let isMounted = true;
+
+    const playVideo = () => {
+      if (!video) return;
+      video.muted = true;
+      const promise = video.play();
+      if (promise !== undefined) {
+        promise
+          .then(() => {
+            if (isMounted) setIsVideoPlaying(true);
+          })
+          .catch((err) => {
+            // Browser blocked autoplay or media still buffering; fallback interaction listener will trigger
+            console.debug("Autoplay waiting for buffer or user gesture:", err?.message || err);
+          });
+      }
+    };
+
+    // Stage 1: Immediate play attempt on mount
+    playVideo();
+
+    // Stage 2: Retries as network chunks arrive (essential for remote Vercel hosting)
+    const handleLoadedMetadata = () => playVideo();
+    const handleCanPlay = () => playVideo();
+    const handlePlaying = () => {
+      if (isMounted) setIsVideoPlaying(true);
+    };
+
+    video.addEventListener("loadedmetadata", handleLoadedMetadata);
+    video.addEventListener("canplay", handleCanPlay);
+    video.addEventListener("playing", handlePlaying);
+
+    // Stage 3: User gesture fallback (essential for iOS Low Power Mode / Android battery saver)
+    const handleUserInteraction = () => {
+      playVideo();
+      removeInteractionListeners();
+    };
+
+    const removeInteractionListeners = () => {
+      window.removeEventListener("touchstart", handleUserInteraction);
+      window.removeEventListener("touchend", handleUserInteraction);
+      window.removeEventListener("scroll", handleUserInteraction);
+      window.removeEventListener("click", handleUserInteraction);
+      window.removeEventListener("keydown", handleUserInteraction);
+    };
+
+    window.addEventListener("touchstart", handleUserInteraction, { passive: true, once: true });
+    window.addEventListener("touchend", handleUserInteraction, { passive: true, once: true });
+    window.addEventListener("scroll", handleUserInteraction, { passive: true, once: true });
+    window.addEventListener("click", handleUserInteraction, { passive: true, once: true });
+    window.addEventListener("keydown", handleUserInteraction, { passive: true, once: true });
+
+    // Stage 4: Tab visibility change
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        playVideo();
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      isMounted = false;
+      removeInteractionListeners();
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      video.removeEventListener("loadedmetadata", handleLoadedMetadata);
+      video.removeEventListener("canplay", handleCanPlay);
+      video.removeEventListener("playing", handlePlaying);
+    };
   }, []);
 
   const scrollToAbout = () => {
@@ -42,13 +115,18 @@ export default function HeroSection() {
           autoPlay
           loop
           muted
+          defaultMuted
           playsInline
-          src="/hero-film.mp4"
-          className="w-full h-full object-cover opacity-50 transition-opacity duration-1000 scale-105"
+          webkit-playsinline="true"
+          preload="auto"
+          disablePictureInPicture
+          disableRemotePlayback
+          className={`w-full h-full object-cover transition-opacity duration-1000 scale-105 ${
+            isVideoPlaying ? "opacity-50" : "opacity-40"
+          }`}
           poster="/hero-poster.webp"
         >
           <source src="/hero-film.mp4" type="video/mp4" />
-          <source src="/assets/images/hero-film.mp4" type="video/mp4" />
         </video>
       </div>
 
