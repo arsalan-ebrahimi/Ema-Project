@@ -134,7 +134,8 @@ export default function MemoriesSection() {
               spaceBetween={16}
               slidesPerView={1.2}
               centeredSlides={false}
-              autoplay={{ delay: 3800, pauseOnMouseEnter: true }}
+              loop={true}
+              autoplay={{ delay: 3800, pauseOnMouseEnter: true, disableOnInteraction: false }}
               grabCursor={true}
               simulateTouch={true}
               allowTouchMove={true}
@@ -217,8 +218,7 @@ export default function MemoriesSection() {
                 <button
                   type="button"
                   onClick={() => swiperInstance?.slidePrev()}
-                  disabled={activeSlideIndex === 0}
-                  className="p-1 rounded-full text-[#f6f1c9]/70 hover:text-[#f6f1c9] hover:bg-[#f6f1c9]/10 disabled:opacity-20 disabled:pointer-events-none transition-all focus:outline-none cursor-pointer"
+                  className="p-1 rounded-full text-[#f6f1c9]/70 hover:text-[#f6f1c9] hover:bg-[#f6f1c9]/10 transition-all focus:outline-none cursor-pointer"
                   aria-label="قاب قبلی"
                 >
                   <ChevronRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
@@ -233,7 +233,15 @@ export default function MemoriesSection() {
                       <button
                         key={targetIdx}
                         type="button"
-                        onClick={() => swiperInstance?.slideTo(targetIdx)}
+                        onClick={() => {
+                          if (swiperInstance) {
+                            if (typeof swiperInstance.slideToLoop === "function") {
+                              swiperInstance.slideToLoop(targetIdx);
+                            } else {
+                              swiperInstance.slideTo(targetIdx);
+                            }
+                          }
+                        }}
                         className={`rounded-full transition-all duration-300 focus:outline-none cursor-pointer ${
                           isActive
                             ? "w-5 sm:w-6 h-2 bg-[#f6f1c9] shadow-[0_0_10px_rgba(246,241,201,0.85)] scale-105"
@@ -260,8 +268,7 @@ export default function MemoriesSection() {
                 <button
                   type="button"
                   onClick={() => swiperInstance?.slideNext()}
-                  disabled={activeSlideIndex >= MEMORIES_DATA.length - 1}
-                  className="p-1 rounded-full text-[#f6f1c9]/70 hover:text-[#f6f1c9] hover:bg-[#f6f1c9]/10 disabled:opacity-20 disabled:pointer-events-none transition-all focus:outline-none cursor-pointer"
+                  className="p-1 rounded-full text-[#f6f1c9]/70 hover:text-[#f6f1c9] hover:bg-[#f6f1c9]/10 transition-all focus:outline-none cursor-pointer"
                   aria-label="قاب بعدی"
                 >
                   <ChevronLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4" />

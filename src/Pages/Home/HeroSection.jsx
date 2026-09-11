@@ -3,21 +3,23 @@
 // Fullscreen cinematic video background with bold typography & call to actions
 // ==========================================
 
-import React, { useRef, useState } from "react";
-import { Play, Volume2, VolumeX, ChevronDown, Sparkles } from "lucide-react";
+import React, { useRef, useEffect } from "react";
+import { Play, ChevronDown, Sparkles } from "lucide-react";
 import { HERO_CONTENT } from "../../Constants/content";
 import { Button, Badge } from "../../Components/UI";
 
 export default function HeroSection() {
   const videoRef = useRef(null);
-  const [isMuted, setIsMuted] = useState(true);
 
-  const toggleSound = () => {
+  useEffect(() => {
     if (videoRef.current) {
-      videoRef.current.muted = !videoRef.current.muted;
-      setIsMuted(videoRef.current.muted);
+      videoRef.current.defaultMuted = true;
+      videoRef.current.muted = true;
+      videoRef.current.play().catch((err) => {
+        console.warn("Autoplay was prevented by browser policy:", err);
+      });
     }
-  };
+  }, []);
 
   const scrollToAbout = () => {
     const el = document.getElementById("about");
@@ -39,7 +41,7 @@ export default function HeroSection() {
           ref={videoRef}
           autoPlay
           loop
-          muted={isMuted}
+          muted
           playsInline
           src="/hero-film.mp4"
           className="w-full h-full object-cover opacity-50 transition-opacity duration-1000 scale-105"
@@ -113,26 +115,6 @@ export default function HeroSection() {
           </Button>
         </div>
       </div>
-
-      {/* Video Sound Toggle Button (Available on both mobile and desktop) */}
-      <button
-        type="button"
-        onClick={toggleSound}
-        className="absolute bottom-4 right-4 sm:bottom-8 sm:right-8 z-20 flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 sm:py-2 rounded-full bg-[#131620]/85 border border-[#f6f1c9]/20 text-[#f6f1c9] hover:bg-[#2a5baa] transition-all backdrop-blur-md text-xs cursor-pointer focus:outline-none shadow-lg"
-        aria-label={isMuted ? "وصل صدای ویدیو" : "قطع صدای ویدیو"}
-      >
-        {isMuted ? (
-          <>
-            <VolumeX className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#f6f1c9]/70" />
-            <span className="text-[11px] sm:text-xs">پخش با صدا</span>
-          </>
-        ) : (
-          <>
-            <Volume2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#f6f1c9]" />
-            <span className="text-[11px] sm:text-xs">بی‌صدا</span>
-          </>
-        )}
-      </button>
 
       {/* Bottom Scroll Down Arrow */}
       <button

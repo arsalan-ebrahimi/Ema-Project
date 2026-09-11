@@ -65,7 +65,7 @@ export default function JoinCtaSection() {
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#f6f1c9/3_1px,transparent_1px),linear-gradient(to_bottom,#f6f1c9/3_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none opacity-30" />
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        
+
         {/* Section Header Eyebrow */}
         <div className="flex flex-col items-center text-center mb-8 sm:mb-12">
           <Badge
@@ -88,7 +88,7 @@ export default function JoinCtaSection() {
 
         {/* Master Cinema Call-Sheet Card */}
         <div className="relative rounded-2xl sm:rounded-3xl bg-gradient-to-b from-[#111422]/95 via-[#0c0f18]/95 to-[#07090f] border-2 border-[#f6f1c9]/20 shadow-[0_30px_90px_-20px_rgba(0,0,0,0.95)] p-4 sm:p-8 md:p-12 overflow-hidden group">
-          
+
           {/* Subtle Behind-the-scenes Photo Underlay for Authentic Cinema Texture */}
           <img
             src="/DSC01333.webp"
@@ -115,21 +115,27 @@ export default function JoinCtaSection() {
 
             {/* Top Slate HUD Bar (Balanced & symmetrical on all mobile viewports) */}
             <div className="w-full flex items-center justify-between pb-4 sm:pb-6 mb-5 sm:mb-8 border-b border-[#f6f1c9]/12 text-xs font-mono text-[#f6f1c9]/60">
-              <div className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-2.5 py-1 rounded-lg bg-black/40 border border-[#f6f1c9]/10 text-[10px] sm:text-[11px]">
-                <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-red-500 animate-pulse" />
+              <div className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-2.5 py-1 rounded-lg bg-black/50 border border-[#f6f1c9]/15 text-[10px] sm:text-[11px] backdrop-blur-sm">
+                <span className="relative flex h-1.5 w-1.5 sm:h-2 sm:w-2 shrink-0">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-60" />
+                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 sm:h-2 sm:w-2 bg-red-500" />
+                </span>
                 <span className="font-bold text-[#f6f1c9] tracking-wider font-mono">
                   EMA CALL SHEET
                 </span>
               </div>
-              
-              <div className="hidden sm:flex items-center gap-2 text-[#f6f1c9]/60 text-[11px]">
+
+              <div className="hidden sm:flex items-center gap-2 text-[#f6f1c9]/65 text-[11px] tracking-wide">
                 <span>SCENE: NEXT TALENT</span>
                 <span>•</span>
-                <span className="text-[#2a5baa] font-bold">ALL DISCIPLINES</span>
+                <span className="text-[#6ba1ea] font-bold">ALL DISCIPLINES</span>
               </div>
 
-              <div className="flex items-center gap-1.5 px-2 sm:px-2.5 py-1 rounded-lg sm:rounded-full bg-[#181c2e] border border-[#f6f1c9]/15 text-[10px] sm:text-[11px] text-[#f6f1c9]/90 font-sans font-medium">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+              <div className="flex items-center gap-1.5 px-2 sm:px-2.5 py-1 rounded-lg sm:rounded-full bg-[#13192a]/90 border border-emerald-500/30 text-[10px] sm:text-[11px] text-[#f6f1c9] font-sans font-medium backdrop-blur-sm shadow-sm">
+                <span className="relative flex h-1.5 w-1.5 sm:h-2 sm:w-2 shrink-0">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60" />
+                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 sm:h-2 sm:w-2 bg-emerald-400" />
+                </span>
                 <span>پذیرش فعال</span>
               </div>
             </div>
@@ -141,19 +147,25 @@ export default function JoinCtaSection() {
 
             {/* Interactive Discipline Badges: Symmetrical 2-Column Grid on Mobile, Flex on Desktop */}
             <div className="w-full max-w-3xl mb-6 sm:mb-10">
-              <span className="block text-[10px] sm:text-xs font-mono tracking-widest text-[#f6f1c9]/50 uppercase mb-3 sm:mb-4">
-                حوزه‌های همکاری و فعالیت
-              </span>
+              <div className="flex items-center justify-center gap-3 mb-3.5 sm:mb-5">
+                <span className="h-[1px] w-6 sm:w-12 bg-gradient-to-r from-transparent to-[#f6f1c9]/35" />
+                <span className="text-xs sm:text-sm font-semibold text-[#f6f1c9]/90 tracking-normal">
+                  حوزه‌های همکاری و فعالیت
+                </span>
+                <span className="h-[1px] w-6 sm:w-12 bg-gradient-to-l from-transparent to-[#f6f1c9]/35" />
+              </div>
               <div className="grid grid-cols-2 sm:flex sm:flex-wrap items-center justify-center gap-2 sm:gap-2.5 w-full">
                 {DISCIPLINES.map((item, idx) => {
                   const Icon = item.icon;
                   return (
                     <div
                       key={idx}
-                      className="flex items-center justify-center sm:inline-flex sm:justify-start gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-2 sm:py-2.5 rounded-xl text-[11px] sm:text-sm font-medium bg-[#151928]/85 border border-[#f6f1c9]/15 text-[#f6f1c9]/90 backdrop-blur-md shadow-md transition-all duration-300 hover:scale-105 hover:border-[#f6f1c9]/45 hover:bg-[#1f253d] hover:text-[#f6f1c9] cursor-default group/item"
+                      className="flex items-center justify-center sm:inline-flex sm:justify-start gap-1.5 sm:gap-2 px-2 sm:px-4 py-2 sm:py-2.5 rounded-xl text-[11px] sm:text-sm font-medium bg-[#131726]/90 border border-[#f6f1c9]/20 text-[#f6f1c9] backdrop-blur-md shadow-md transition-all duration-300 hover:scale-[1.03] hover:border-[#f6f1c9]/45 hover:bg-[#1a2136] hover:shadow-[0_4px_20px_rgba(42,91,170,0.25)] cursor-default group/item min-w-0"
                     >
-                      <Icon className="w-3.5 h-3.5 text-[#2a5baa] group-hover/item:text-[#f6f1c9] transition-colors shrink-0" />
-                      <span className="truncate">{item.label}</span>
+                      <div className="w-4 h-4 sm:w-5 sm:h-5 rounded sm:rounded-md bg-[#2a5baa]/25 border border-[#2a5baa]/40 flex items-center justify-center shrink-0 group-hover/item:border-[#f6f1c9]/40 group-hover/item:bg-[#2a5baa]/45 transition-colors">
+                        <Icon className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#7ca9ed] group-hover/item:text-[#f6f1c9] transition-colors" />
+                      </div>
+                      <span className="whitespace-nowrap select-none">{item.label}</span>
                     </div>
                   );
                 })}

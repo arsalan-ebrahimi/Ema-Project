@@ -219,7 +219,8 @@ export default function OurWork() {
               modules={[Autoplay]}
               spaceBetween={20}
               slidesPerView={1.2}
-              autoplay={{ delay: 4000, pauseOnMouseEnter: true }}
+              loop={true}
+              autoplay={{ delay: 4000, pauseOnMouseEnter: true, disableOnInteraction: false }}
               grabCursor={true}
               simulateTouch={true}
               allowTouchMove={true}
@@ -303,8 +304,7 @@ export default function OurWork() {
                 <button
                   type="button"
                   onClick={() => btsSwiperInstance?.slidePrev()}
-                  disabled={activeBtsSlideIndex === 0}
-                  className="p-1 rounded-full text-[#f6f1c9]/70 hover:text-[#f6f1c9] hover:bg-[#f6f1c9]/10 disabled:opacity-20 disabled:pointer-events-none transition-all focus:outline-none cursor-pointer"
+                  className="p-1 rounded-full text-[#f6f1c9]/70 hover:text-[#f6f1c9] hover:bg-[#f6f1c9]/10 transition-all focus:outline-none cursor-pointer"
                   aria-label="قاب قبلی"
                 >
                   <ChevronRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
@@ -317,7 +317,15 @@ export default function OurWork() {
                       <button
                         key={idx}
                         type="button"
-                        onClick={() => btsSwiperInstance?.slideTo(idx)}
+                        onClick={() => {
+                          if (btsSwiperInstance) {
+                            if (typeof btsSwiperInstance.slideToLoop === "function") {
+                              btsSwiperInstance.slideToLoop(idx);
+                            } else {
+                              btsSwiperInstance.slideTo(idx);
+                            }
+                          }
+                        }}
                         className={`rounded-full transition-all duration-300 focus:outline-none cursor-pointer ${
                           isActive
                             ? "w-5 sm:w-6 h-2 bg-[#f6f1c9] shadow-[0_0_10px_rgba(246,241,201,0.85)] scale-105"
@@ -339,8 +347,7 @@ export default function OurWork() {
                 <button
                   type="button"
                   onClick={() => btsSwiperInstance?.slideNext()}
-                  disabled={activeBtsSlideIndex >= btsPhotos.length - 1}
-                  className="p-1 rounded-full text-[#f6f1c9]/70 hover:text-[#f6f1c9] hover:bg-[#f6f1c9]/10 disabled:opacity-20 disabled:pointer-events-none transition-all focus:outline-none cursor-pointer"
+                  className="p-1 rounded-full text-[#f6f1c9]/70 hover:text-[#f6f1c9] hover:bg-[#f6f1c9]/10 transition-all focus:outline-none cursor-pointer"
                   aria-label="قاب بعدی"
                 >
                   <ChevronLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
