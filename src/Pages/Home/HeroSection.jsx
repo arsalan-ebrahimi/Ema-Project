@@ -15,91 +15,77 @@ export default function HeroSection() {
     const video = videoRef.current;
     if (!video) return;
 
-    // Force all native mobile browser autoplay properties & DOM attributes
-    video.defaultMuted = true;
+    // 1 & 2. Ensure muted, playsinline, and mobile DOM properties
     video.muted = true;
+    video.defaultMuted = true;
     video.playsInline = true;
     video.setAttribute("muted", "");
     video.setAttribute("playsinline", "");
     video.setAttribute("webkit-playsinline", "true");
-    video.setAttribute("x5-playsinline", "true");
 
-    let isPlaying = false;
+    let fallbackRegistered = false;
 
-    const attemptPlay = () => {
+    // Fallback: only attach user interaction listeners if play() promise was rejected
+    const attachInteractionFallback = () => {
+      if (fallbackRegistered) return;
+      fallbackRegistered = true;
+
+      const onInteraction = () => {
+        if (!video) return;
+        video.muted = true;
+        video.play().catch(() => {});
+        cleanupInteractionFallback();
+      };
+
+      const cleanupInteractionFallback = () => {
+        window.removeEventListener("touchstart", onInteraction);
+        window.removeEventListener("scroll", onInteraction);
+        window.removeEventListener("click", onInteraction);
+      };
+
+      window.addEventListener("touchstart", onInteraction, { once: true, passive: true });
+      window.addEventListener("scroll", onInteraction, { once: true, passive: true });
+      window.addEventListener("click", onInteraction, { once: true, passive: true });
+    };
+
+    // 3 & 4. Early direct play call only after video metadata/data is ready, never prematurely
+    const handleReadyAndPlay = () => {
       if (!video) return;
-      if (isPlaying || !video.paused) return;
+      if (!video.paused) return;
 
-      video.defaultMuted = true;
+      // Guarantee DOM muted property before calling play()
       video.muted = true;
 
       const playPromise = video.play();
       if (playPromise !== undefined) {
-        playPromise
-          .then(() => {
-            isPlaying = true;
-          })
-          .catch(() => {
-            // Autoplay delayed or restricted until metadata/buffer is ready
-          });
+        playPromise.catch(() => {
+          // Playback rejected by mobile browser policy (e.g. low-power mode)
+          // Fallback: register listener for first user touch or scroll
+          attachInteractionFallback();
+        });
       }
     };
 
-    // 1. Immediate play attempt
-    attemptPlay();
+    // Check if metadata is already loaded; if not, wait for loadedmetadata or canplay
+    if (video.readyState >= 1) {
+      handleReadyAndPlay();
+    } else {
+      video.addEventListener("loadedmetadata", handleReadyAndPlay, { once: true });
+      video.addEventListener("canplay", handleReadyAndPlay, { once: true });
+    }
 
-    // 2. Play immediately as soon as video buffer/metadata is ready on mobile
-    video.addEventListener("loadedmetadata", attemptPlay);
-    video.addEventListener("loadeddata", attemptPlay);
-    video.addEventListener("canplay", attemptPlay);
-    video.addEventListener("canplaythrough", attemptPlay);
-
-    // 3. Staggered retries for mobile devices that delay play until initial render completes
-    const timers = [
-      setTimeout(attemptPlay, 80),
-      setTimeout(attemptPlay, 250),
-      setTimeout(attemptPlay, 600),
-      setTimeout(attemptPlay, 1200),
-    ];
-
-    // 4. Tab visibility handler (resumes playback if mobile browser suspends background tab)
+    // Visibility change handler to resume playback if mobile browser tab is re-activated
     const handleVisibilityChange = () => {
-      if (document.visibilityState === "visible") {
-        attemptPlay();
+      if (document.visibilityState === "visible" && video.paused) {
+        handleReadyAndPlay();
       }
     };
     document.addEventListener("visibilitychange", handleVisibilityChange);
 
-    // 5. Fallback gesture listener only for devices with ultra-strict OS battery saver (Low Power Mode)
-    const onUserInteraction = () => {
-      attemptPlay();
-      if (isPlaying || !video.paused) {
-        cleanupInteractionListeners();
-      }
-    };
-
-    const cleanupInteractionListeners = () => {
-      window.removeEventListener("touchstart", onUserInteraction);
-      window.removeEventListener("touchmove", onUserInteraction);
-      window.removeEventListener("scroll", onUserInteraction);
-      window.removeEventListener("click", onUserInteraction);
-      window.removeEventListener("pointerdown", onUserInteraction);
-    };
-
-    window.addEventListener("touchstart", onUserInteraction, { passive: true });
-    window.addEventListener("touchmove", onUserInteraction, { passive: true });
-    window.addEventListener("scroll", onUserInteraction, { passive: true });
-    window.addEventListener("click", onUserInteraction, { passive: true });
-    window.addEventListener("pointerdown", onUserInteraction, { passive: true });
-
     return () => {
-      video.removeEventListener("loadedmetadata", attemptPlay);
-      video.removeEventListener("loadeddata", attemptPlay);
-      video.removeEventListener("canplay", attemptPlay);
-      video.removeEventListener("canplaythrough", attemptPlay);
+      video.removeEventListener("loadedmetadata", handleReadyAndPlay);
+      video.removeEventListener("canplay", handleReadyAndPlay);
       document.removeEventListener("visibilitychange", handleVisibilityChange);
-      cleanupInteractionListeners();
-      timers.forEach(clearTimeout);
     };
   }, []);
 
@@ -126,8 +112,8 @@ export default function HeroSection() {
           muted
           playsInline
           webkit-playsinline="true"
-          x5-playsinline="true"
           preload="auto"
+          src="/hero-film.mp4"
           className="w-full h-full object-cover opacity-50 transition-opacity duration-1000 scale-105 pointer-events-none"
           poster="/hero-poster.webp"
         >
