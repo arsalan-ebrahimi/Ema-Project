@@ -25,12 +25,12 @@ import { Button, Badge } from "../../Components/UI";
 const DISCIPLINES = [
   { label: "فیلمبرداری", icon: Camera },
   { label: "کارگردانی", icon: Film },
-  { label: "تدوین و ریتم", icon: Video },
-  { label: "نویسندگی و قصه", icon: PenTool },
+  { label: "تدوین", icon: Video },
+  { label: "نویسندگی", icon: PenTool },
   { label: "صدا و موسیقی", icon: Mic },
   { label: "بازیگری", icon: Sparkles },
   { label: "طراحی صحنه", icon: Palette },
-  { label: "تولید و هدایت", icon: Users },
+  { label: "تولید", icon: Users },
 ];
 
 const PERKS = [
@@ -165,7 +165,7 @@ export default function JoinCtaSection() {
                       <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-[#2a5baa]/25 border border-[#2a5baa]/40 flex items-center justify-center shrink-0 group-hover/item:border-[#f6f1c9]/40 group-hover/item:bg-[#2a5baa]/45 transition-colors shadow-inner">
                         <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#7ca9ed] group-hover/item:text-[#f6f1c9] transition-colors" />
                       </div>
-                      <span className="text-[11px] sm:text-sm font-semibold text-[#f6f1c9]/95 group-hover/item:text-[#f6f1c9] transition-colors select-none leading-tight truncate">
+                      <span className="whitespace-nowrap select-none font-semibold text-xs sm:text-sm text-[#f6f1c9]/95 group-hover/item:text-[#f6f1c9] transition-colors leading-none">
                         {item.label}
                       </span>
                     </div>
