@@ -160,12 +160,12 @@ export default function JoinCtaSection() {
                   return (
                     <div
                       key={idx}
-                      className="flex items-center justify-start gap-2.5 sm:gap-3.5 px-2.5 sm:px-4 py-2.5 sm:py-3 rounded-xl bg-[#131726]/90 border border-[#f6f1c9]/20 text-[#f6f1c9] backdrop-blur-md shadow-md transition-all duration-300 hover:scale-[1.02] hover:border-[#f6f1c9]/45 hover:bg-[#1a2136] hover:shadow-[0_4px_20px_rgba(42,91,170,0.25)] cursor-default group/item text-right"
+                      className="flex items-center justify-start gap-2 sm:gap-3 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-[#131726]/90 border border-[#f6f1c9]/20 text-[#f6f1c9] backdrop-blur-md shadow-md transition-all duration-300 hover:scale-[1.02] hover:border-[#f6f1c9]/45 hover:bg-[#1a2136] hover:shadow-[0_4px_20px_rgba(42,91,170,0.25)] cursor-default group/item text-right min-w-0"
                     >
                       <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-[#2a5baa]/25 border border-[#2a5baa]/40 flex items-center justify-center shrink-0 group-hover/item:border-[#f6f1c9]/40 group-hover/item:bg-[#2a5baa]/45 transition-colors shadow-inner">
                         <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#7ca9ed] group-hover/item:text-[#f6f1c9] transition-colors" />
                       </div>
-                      <span className="whitespace-nowrap select-none font-semibold text-xs sm:text-sm text-[#f6f1c9]/95 group-hover/item:text-[#f6f1c9] transition-colors">
+                      <span className="text-[11px] sm:text-sm font-semibold text-[#f6f1c9]/95 group-hover/item:text-[#f6f1c9] transition-colors select-none leading-tight truncate">
                         {item.label}
                       </span>
                     </div>
