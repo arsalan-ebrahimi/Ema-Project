@@ -103,8 +103,15 @@ export default function HeroSection() {
   return (
     <section className="relative w-full min-h-[100dvh] flex items-center justify-center overflow-hidden py-24 sm:py-32">
       
-      {/* Background Video with Fallback */}
-      <div className="absolute inset-0 w-full h-full bg-[#07080b]">
+      {/* Background Video with Fallback Poster */}
+      <div className="absolute inset-0 w-full h-full bg-[#07080b] overflow-hidden">
+        {/* Instant reliable mobile poster background */}
+        <img
+          src="/میمی.webp"
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 w-full h-full object-cover object-center opacity-50 pointer-events-none"
+        />
         <video
           ref={videoRef}
           autoPlay
@@ -114,7 +121,7 @@ export default function HeroSection() {
           webkit-playsinline="true"
           preload="auto"
           src="/hero-film.mp4"
-          className="w-full h-full object-cover opacity-50 transition-opacity duration-1000 scale-105 pointer-events-none"
+          className="absolute inset-0 w-full h-full object-cover object-center opacity-50 transition-opacity duration-1000 pointer-events-none"
           poster="/میمی.webp"
         >
           <source src="/hero-film.mp4" type="video/mp4" />

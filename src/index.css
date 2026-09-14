@@ -209,3 +209,10 @@ body {
   animation-play-state: paused;
 }
 
+/* Background video & poster global normalization */
+video {
+  object-fit: cover;
+  object-position: center;
+}
+
+
