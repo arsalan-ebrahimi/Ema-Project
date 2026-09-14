@@ -115,7 +115,7 @@ export default function HeroSection() {
           preload="auto"
           src="/hero-film.mp4"
           className="w-full h-full object-cover opacity-50 transition-opacity duration-1000 scale-105 pointer-events-none"
-          poster="/hero-poster.webp"
+          poster="/میمی.webp"
         >
           <source src="/hero-film.mp4" type="video/mp4" />
         </video>
