@@ -4,7 +4,7 @@
 // editorial narrative, mobile-first BTS gallery, and navigation flow
 // ==========================================
 
-import React, { useState } from "react";
+import React, { useState, useMemo, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
@@ -85,10 +85,10 @@ export default function OurWork() {
     },
   ];
 
-  const openLightbox = (index) => {
+  const openLightbox = useCallback((index) => {
     setActiveBtsIdx(index);
     setLightboxOpen(true);
-  };
+  }, []);
 
   const handleShare = () => {
     if (navigator.clipboard) {
@@ -98,6 +98,66 @@ export default function OurWork() {
       setTimeout(() => setCopiedLink(false), 2500);
     }
   };
+
+  // Performance: Memoize BTS slides to prevent re-render during swiping
+  const memoizedBtsSlides = useMemo(() => {
+    return btsPhotos.map((photo, index) => (
+      <SwiperSlide key={photo.id}>
+        <div
+          onClick={() => openLightbox(index)}
+          className="group relative rounded-2xl overflow-hidden bg-[#111420] border border-[#f6f1c9]/15 shadow-xl shadow-black/70 cursor-pointer transition-all duration-300 hover:border-[#f6f1c9]/40 hover:-translate-y-1"
+        >
+          {/* Balanced cinema frame: responsive widescreen aspect-ratio matching Home page */}
+          <div className="relative aspect-[16/10] sm:aspect-[16/9] w-full overflow-hidden bg-gradient-to-br from-[#161a29] to-[#0a0c12]">
+            <img
+              src={photo.src}
+              alt={photo.tag}
+              loading="lazy"
+              decoding="async"
+              className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+              onError={(e) => {
+                const currentSrc = e.currentTarget.getAttribute("src");
+                if (currentSrc && currentSrc.endsWith(".webp")) {
+                  e.currentTarget.src = currentSrc.replace(".webp", ".jpg");
+                } else if (currentSrc && currentSrc.endsWith(".jpg")) {
+                  e.currentTarget.src = currentSrc.replace(".jpg", ".png");
+                }
+              }}
+            />
+
+            {/* Cinematic Viewfinder Focus Overlay (Hidden on touch mobile to conserve GPU layers, shown on desktop hover) */}
+            <div className="hidden sm:flex absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-black/35 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none flex-col justify-between p-3.5 sm:p-4">
+              {/* Top Bar: Viewfinder Frame Stamp */}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-black/80 border border-[#f6f1c9]/20 text-[10px] font-mono text-[#f6f1c9]/85">
+                  <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
+                  <span>REC</span>
+                </div>
+                <span className="text-[10px] font-mono text-[#f6f1c9]/60 tracking-wider">
+                  35MM STILL
+                </span>
+              </div>
+
+              {/* Viewfinder Reticle Corners */}
+              <div className="absolute top-2.5 right-2.5 w-3.5 h-3.5 border-t-2 border-r-2 border-[#f6f1c9]/70 rounded-tr pointer-events-none" />
+              <div className="absolute top-2.5 left-2.5 w-3.5 h-3.5 border-t-2 border-l-2 border-[#f6f1c9]/70 rounded-tl pointer-events-none" />
+              <div className="absolute bottom-2.5 right-2.5 w-3.5 h-3.5 border-b-2 border-r-2 border-[#f6f1c9]/70 rounded-br pointer-events-none" />
+              <div className="absolute bottom-2.5 left-2.5 w-3.5 h-3.5 border-b-2 border-l-2 border-[#f6f1c9]/70 rounded-bl pointer-events-none" />
+
+              {/* Bottom Floating Glass Capsule Pill */}
+              <div className="flex items-center justify-center transform translate-y-1.5 group-hover:translate-y-0 transition-transform duration-300">
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0d101a]/95 border border-[#f6f1c9]/35 text-[#f6f1c9] shadow-xl text-[11px] sm:text-xs font-medium">
+                  <Maximize2 className="w-3.5 h-3.5 text-[#2a5baa]" />
+                  <span>مشاهده در ابعاد بزرگ</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </SwiperSlide>
+    ));
+  }, [openLightbox, btsPhotos]);
 
   return (
     <div className="w-full bg-[#07080b] text-[#f6f1c9] min-h-screen overflow-x-hidden selection:bg-[#2a5baa] selection:text-[#f6f1c9]">
@@ -334,18 +394,20 @@ export default function OurWork() {
               spaceBetween={14}
               slidesPerView={1.2}
               loop={true}
-              speed={450}
-              watchSlidesProgress={true}
+              speed={400}
+              watchSlidesProgress={false}
               autoplay={{
                 delay: 4500,
                 pauseOnMouseEnter: true,
                 disableOnInteraction: false,
               }}
               grabCursor={true}
-              simulateTouch={true}
+              simulateTouch={false}
               allowTouchMove={true}
-              touchRatio={1.2}
-              resistanceRatio={0.7}
+              touchRatio={1}
+              resistanceRatio={0.65}
+              touchAngle={45}
+              threshold={5}
               onSwiper={setBtsSwiperInstance}
               onSlideChange={(swiper) =>
                 setActiveBtsSlideIndex(swiper.realIndex ?? swiper.activeIndex)
@@ -358,67 +420,12 @@ export default function OurWork() {
               }}
               className="bts-swiper rounded-2xl overflow-hidden"
             >
-              {btsPhotos.map((photo, index) => (
-                <SwiperSlide key={photo.id}>
-                  <div
-                    onClick={() => openLightbox(index)}
-                    className="group relative rounded-2xl overflow-hidden bg-[#111420] border border-[#f6f1c9]/15 shadow-xl shadow-black/70 cursor-pointer transition-all duration-300 hover:border-[#f6f1c9]/40 hover:-translate-y-1.5"
-                  >
-                    {/* Balanced cinema frame: responsive widescreen aspect-ratio matching Home page */}
-                    <div className="relative aspect-[16/10] sm:aspect-[16/9] w-full overflow-hidden bg-gradient-to-br from-[#161a29] to-[#0a0c12]">
-                      <img
-                        src={photo.src}
-                        alt={photo.tag}
-                        loading="lazy"
-                        decoding="async"
-                        className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105 will-change-transform"
-                        onError={(e) => {
-                          const currentSrc = e.currentTarget.getAttribute("src");
-                          if (currentSrc && currentSrc.endsWith(".webp")) {
-                            e.currentTarget.src = currentSrc.replace(".webp", ".jpg");
-                          } else if (currentSrc && currentSrc.endsWith(".jpg")) {
-                            e.currentTarget.src = currentSrc.replace(".jpg", ".png");
-                          }
-                        }}
-                      />
-
-                      {/* Cinematic Viewfinder Focus Overlay (Matching Home Page) */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-black/35 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none flex flex-col justify-between p-3.5 sm:p-4">
-                        {/* Top Bar: Viewfinder Frame Stamp */}
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-black/60 backdrop-blur-sm border border-[#f6f1c9]/20 text-[10px] font-mono text-[#f6f1c9]/85">
-                            <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
-                            <span>REC</span>
-                          </div>
-                          <span className="text-[10px] font-mono text-[#f6f1c9]/60 tracking-wider">
-                            35MM STILL
-                          </span>
-                        </div>
-
-                        {/* Viewfinder Reticle Corners */}
-                        <div className="absolute top-2.5 right-2.5 w-3.5 h-3.5 border-t-2 border-r-2 border-[#f6f1c9]/70 rounded-tr pointer-events-none" />
-                        <div className="absolute top-2.5 left-2.5 w-3.5 h-3.5 border-t-2 border-l-2 border-[#f6f1c9]/70 rounded-tl pointer-events-none" />
-                        <div className="absolute bottom-2.5 right-2.5 w-3.5 h-3.5 border-b-2 border-r-2 border-[#f6f1c9]/70 rounded-br pointer-events-none" />
-                        <div className="absolute bottom-2.5 left-2.5 w-3.5 h-3.5 border-b-2 border-l-2 border-[#f6f1c9]/70 rounded-bl pointer-events-none" />
-
-                        {/* Bottom Floating Glass Capsule Pill */}
-                        <div className="flex items-center justify-center transform translate-y-1.5 group-hover:translate-y-0 transition-transform duration-300">
-                          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0d101a]/90 backdrop-blur-md border border-[#f6f1c9]/35 text-[#f6f1c9] shadow-xl text-[11px] sm:text-xs font-medium">
-                            <Maximize2 className="w-3.5 h-3.5 text-[#2a5baa]" />
-                            <span>مشاهده در ابعاد بزرگ</span>
-                          </div>
-                        </div>
-                      </div>
-
-                    </div>
-                  </div>
-                </SwiperSlide>
-              ))}
+              {memoizedBtsSlides}
             </Swiper>
 
             {/* Custom BTS Navigation Bar & Pagination Controller */}
             <div className="flex items-center justify-center mt-6 sm:mt-8">
-              <div className="inline-flex items-center gap-2 sm:gap-3 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-[#111420]/95 border border-[#f6f1c9]/20 backdrop-blur-xl shadow-2xl shadow-black/80">
+              <div className="inline-flex items-center gap-2 sm:gap-3 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-[#111420]/95 border border-[#f6f1c9]/20 shadow-2xl shadow-black/80">
                 <button
                   type="button"
                   onClick={() => btsSwiperInstance?.slidePrev()}

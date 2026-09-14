@@ -3,7 +3,7 @@
 // Dynamic photo album with Swiper Carousel & Masonry view toggle
 // ==========================================
 
-import React, { useState } from "react";
+import React, { useState, useMemo, useCallback } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import {
@@ -66,10 +66,70 @@ export default function MemoriesSection() {
     }
   };
 
-  const openLightbox = (index) => {
+  const openLightbox = useCallback((index) => {
     setActivePhotoIdx(index);
     setLightboxOpen(true);
-  };
+  }, []);
+
+  // Performance: Memoize all 26 slides so slide change doesn't re-render entire slide tree
+  const memoizedSlides = useMemo(() => {
+    return MEMORIES_DATA.map((item, index) => (
+      <SwiperSlide key={item.id}>
+        <div
+          onClick={() => openLightbox(index)}
+          className="group relative rounded-2xl overflow-hidden bg-[#111420] border border-[#f6f1c9]/15 shadow-lg shadow-black/70 cursor-pointer transition-all duration-300 hover:border-[#f6f1c9]/40 hover:-translate-y-1"
+        >
+          {/* Balanced cinema frame: responsive widescreen aspect-ratio matching Work page */}
+          <div className="relative aspect-[16/10] sm:aspect-[16/9] w-full overflow-hidden bg-gradient-to-br from-[#181c2b] to-[#0a0c12]">
+            <img
+              src={item.src}
+              alt={item.title || "لحظه‌های ماندگار خانواده عما"}
+              loading="lazy"
+              decoding="async"
+              className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+              onError={handleImageError}
+              onLoad={handleImageLoad}
+            />
+
+            {/* Film Still Placeholder Artwork */}
+            <div className="hidden w-full h-full flex-col justify-center items-center p-4 bg-gradient-to-t from-[#06080d] via-[#101422] to-[#171c2e]">
+              <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-[#2a5baa]/20 border border-[#2a5baa]/40 flex items-center justify-center text-[#f6f1c9]">
+                <Film className="w-5 h-5 md:w-6 md:h-6" />
+              </div>
+            </div>
+
+            {/* Cinematic Viewfinder Focus Overlay (Hidden on mobile touch screens to save GPU rendering, shown on desktop hover) */}
+            <div className="hidden sm:flex absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-black/35 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none flex-col justify-between p-3.5 sm:p-4">
+              {/* Top Bar: Viewfinder Frame Stamp */}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-black/80 border border-[#f6f1c9]/20 text-[10px] font-mono text-[#f6f1c9]/85">
+                  <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
+                  <span>REC</span>
+                </div>
+                <span className="text-[10px] font-mono text-[#f6f1c9]/60 tracking-wider">
+                  35MM STILL
+                </span>
+              </div>
+
+              {/* Viewfinder Reticle Corners */}
+              <div className="absolute top-2.5 right-2.5 w-3.5 h-3.5 border-t-2 border-r-2 border-[#f6f1c9]/70 rounded-tr pointer-events-none" />
+              <div className="absolute top-2.5 left-2.5 w-3.5 h-3.5 border-t-2 border-l-2 border-[#f6f1c9]/70 rounded-tl pointer-events-none" />
+              <div className="absolute bottom-2.5 right-2.5 w-3.5 h-3.5 border-b-2 border-r-2 border-[#f6f1c9]/70 rounded-br pointer-events-none" />
+              <div className="absolute bottom-2.5 left-2.5 w-3.5 h-3.5 border-b-2 border-l-2 border-[#f6f1c9]/70 rounded-bl pointer-events-none" />
+
+              {/* Bottom Floating Glass Capsule Pill */}
+              <div className="flex items-center justify-center transform translate-y-1.5 group-hover:translate-y-0 transition-transform duration-300">
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0d101a]/95 border border-[#f6f1c9]/35 text-[#f6f1c9] shadow-xl text-[11px] sm:text-xs font-medium">
+                  <Maximize2 className="w-3.5 h-3.5 text-[#2a5baa]" />
+                  <span>مشاهده در ابعاد بزرگ</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </SwiperSlide>
+    ));
+  }, [openLightbox]);
 
   return (
     <section id="memories" className="relative pt-20 md:pt-28 pb-12 md:pb-16 bg-[#0a0c12] overflow-hidden">
@@ -134,14 +194,16 @@ export default function MemoriesSection() {
               spaceBetween={14}
               slidesPerView={1.2}
               loop={true}
-              speed={450}
-              watchSlidesProgress={true}
+              speed={400}
+              watchSlidesProgress={false}
               autoplay={{ delay: 4000, pauseOnMouseEnter: true, disableOnInteraction: false }}
               grabCursor={true}
-              simulateTouch={true}
+              simulateTouch={false}
               allowTouchMove={true}
-              touchRatio={1.2}
-              resistanceRatio={0.7}
+              touchRatio={1}
+              resistanceRatio={0.65}
+              touchAngle={45}
+              threshold={5}
               onSwiper={setSwiperInstance}
               onSlideChange={(swiper) =>
                 setActiveSlideIndex(swiper.realIndex ?? swiper.activeIndex)
@@ -154,67 +216,12 @@ export default function MemoriesSection() {
               }}
               className="memories-swiper rounded-2xl overflow-hidden"
             >
-              {MEMORIES_DATA.map((item, index) => (
-                <SwiperSlide key={item.id}>
-                  <div
-                    onClick={() => openLightbox(index)}
-                    className="group relative rounded-2xl overflow-hidden bg-[#111420] border border-[#f6f1c9]/15 shadow-xl shadow-black/70 cursor-pointer transition-all duration-300 hover:border-[#f6f1c9]/40 hover:-translate-y-1.5"
-                  >
-                    {/* Balanced cinema frame: responsive widescreen aspect-ratio matching Work page */}
-                    <div className="relative aspect-[16/10] sm:aspect-[16/9] w-full overflow-hidden bg-gradient-to-br from-[#181c2b] to-[#0a0c12]">
-                      <img
-                        src={item.src}
-                        alt="لحظه‌های ماندگار خانواده عما"
-                        loading="lazy"
-                        decoding="async"
-                        className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105 will-change-transform"
-                        onError={handleImageError}
-                        onLoad={handleImageLoad}
-                      />
-
-                      {/* Film Still Placeholder Artwork */}
-                      <div className="hidden w-full h-full flex-col justify-center items-center p-4 bg-gradient-to-t from-[#06080d] via-[#101422] to-[#171c2e]">
-                        <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-[#2a5baa]/20 border border-[#2a5baa]/40 flex items-center justify-center text-[#f6f1c9]">
-                          <Film className="w-5 h-5 md:w-6 md:h-6" />
-                        </div>
-                      </div>
-
-                      {/* Cinematic Viewfinder Focus Overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-black/35 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none flex flex-col justify-between p-3.5 sm:p-4">
-                        {/* Top Bar: Viewfinder Frame Stamp */}
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-black/60 backdrop-blur-sm border border-[#f6f1c9]/20 text-[10px] font-mono text-[#f6f1c9]/85">
-                            <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
-                            <span>REC</span>
-                          </div>
-                          <span className="text-[10px] font-mono text-[#f6f1c9]/60 tracking-wider">
-                            35MM STILL
-                          </span>
-                        </div>
-
-                        {/* Viewfinder Reticle Corners */}
-                        <div className="absolute top-2.5 right-2.5 w-3.5 h-3.5 border-t-2 border-r-2 border-[#f6f1c9]/70 rounded-tr pointer-events-none" />
-                        <div className="absolute top-2.5 left-2.5 w-3.5 h-3.5 border-t-2 border-l-2 border-[#f6f1c9]/70 rounded-tl pointer-events-none" />
-                        <div className="absolute bottom-2.5 right-2.5 w-3.5 h-3.5 border-b-2 border-r-2 border-[#f6f1c9]/70 rounded-br pointer-events-none" />
-                        <div className="absolute bottom-2.5 left-2.5 w-3.5 h-3.5 border-b-2 border-l-2 border-[#f6f1c9]/70 rounded-bl pointer-events-none" />
-
-                        {/* Bottom Floating Glass Capsule Pill */}
-                        <div className="flex items-center justify-center transform translate-y-1.5 group-hover:translate-y-0 transition-transform duration-300">
-                          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0d101a]/90 backdrop-blur-md border border-[#f6f1c9]/35 text-[#f6f1c9] shadow-xl text-[11px] sm:text-xs font-medium">
-                            <Maximize2 className="w-3.5 h-3.5 text-[#2a5baa]" />
-                            <span>مشاهده در ابعاد بزرگ</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </SwiperSlide>
-              ))}
+              {memoizedSlides}
             </Swiper>
 
             {/* Custom Cinematic Dots & Frame Controller (Flawless, perfectly centered on all screens) */}
             <div className="flex items-center justify-center mt-5 sm:mt-7">
-              <div className="inline-flex items-center gap-2 sm:gap-3 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-[#111420]/95 border border-[#f6f1c9]/20 backdrop-blur-xl shadow-2xl shadow-black/80">
+              <div className="inline-flex items-center gap-2 sm:gap-3 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-[#111420]/95 border border-[#f6f1c9]/20 shadow-2xl shadow-black/80">
                 {/* Prev Slide Button */}
                 <button
                   type="button"
